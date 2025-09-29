@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeConteudo.Domain.Tests", "tests\EducacaoOnline.GestaoDeConteudo.Domain.Tests\EducacaoOnline.GestaoDeConteudo.Domain.Tests.csproj", "{198640D2-39BD-4D68-8AF7-1C392B2FECD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeConteudo.Domain", "src\EducacaoOnline.GestaoDeConteudo.Domain\EducacaoOnline.GestaoDeConteudo.Domain.csproj", "{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{198640D2-39BD-4D68-8AF7-1C392B2FECD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198640D2-39BD-4D68-8AF7-1C392B2FECD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198640D2-39BD-4D68-8AF7-1C392B2FECD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198640D2-39BD-4D68-8AF7-1C392B2FECD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9809179B-A465-4527-8219-7BE38D81F592}
+	EndGlobalSection
+EndGlobal
