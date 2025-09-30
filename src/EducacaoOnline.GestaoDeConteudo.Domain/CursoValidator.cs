@@ -15,6 +15,10 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
 
             RuleFor(c => c.ConteudoProgramatico)
                 .NotNull().WithMessage("O conteúdo programático deve ser descrito.");
+
+            RuleFor(c => c.ConteudoProgramatico.Descricao)
+                .NotEmpty().WithMessage("A descrição do conteúdo programático é obrigatória.")
+                .Length(10, 1000).WithMessage("A descrição deve conter 10 a 1000 caracteres.");
         }
     }
 }
