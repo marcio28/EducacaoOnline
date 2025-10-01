@@ -1,3 +1,5 @@
+using EducacaoOnline.GestaoDeConteudo.Domain.Exceptions;
+
 namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 {
     public class CursoTests
@@ -60,7 +62,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             var curso = new Curso(nome, conteudoProgramatico);
 
             // Act & Assert
-            var exception = Assert.Throws<CursoInvalidoNaoPodeReceberMatriculaException>(() => curso.TornarDisponivelParaMatricula());
+            var exception = Assert.Throws<DisponibilizacaoDeCursoInvalidoException>(() => curso.TornarDisponivelParaMatricula());
             Assert.False(curso.DisponivelParaMatricula);
         }
     }

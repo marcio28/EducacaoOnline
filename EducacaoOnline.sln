@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeCont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeConteudo.Domain", "src\EducacaoOnline.GestaoDeConteudo.Domain\EducacaoOnline.GestaoDeConteudo.Domain.csproj", "{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.Core", "src\EducacaoOnline.Core\EducacaoOnline.Core.csproj", "{F39CD69D-F042-4727-91E1-42BE7E86F324}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EABC3A7C-A90C-4A43-BE37-536AB0A1798F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39CD69D-F042-4727-91E1-42BE7E86F324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39CD69D-F042-4727-91E1-42BE7E86F324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39CD69D-F042-4727-91E1-42BE7E86F324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39CD69D-F042-4727-91E1-42BE7E86F324}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿
-using FluentValidation.Results;
+using EducacaoOnline.GestaoDeConteudo.Domain.Exceptions;
+using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
 using System.Collections.ObjectModel;
 
 namespace EducacaoOnline.GestaoDeConteudo.Domain
@@ -26,7 +27,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
         public void TornarDisponivelParaMatricula()
         {
             if (!EhValido())
-                throw new CursoInvalidoNaoPodeReceberMatriculaException();
+                throw new DisponibilizacaoDeCursoInvalidoException();
         }
 
         public void TornarIndisponivelParaMatricula()
