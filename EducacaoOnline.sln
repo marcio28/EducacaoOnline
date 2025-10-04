@@ -9,6 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeCont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.Core", "src\EducacaoOnline.Core\EducacaoOnline.Core.csproj", "{F39CD69D-F042-4727-91E1-42BE7E86F324}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeAlunos.Domain", "src\EducacaoOnline.GestaoDeAlunos.Domain\EducacaoOnline.GestaoDeAlunos.Domain.csproj", "{EFC7F3AB-962A-42C3-A1A8-CB6C6506DA96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeAlunos.Domain.Tests", "src\EducacaoOnline.GestaoDeAlunos.Domain.Tests\EducacaoOnline.GestaoDeAlunos.Domain.Tests.csproj", "{169EE781-A4CF-46C4-94B9-216F7F59FC2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFaturamento.Domain", "src\EducacaoOnline.PagamentoEFaturamento.Domain\EducacaoOnline.PagamentoEFaturamento.Domain.csproj", "{735F34B3-B126-42FC-A224-2D902ED53D4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFaturamento.Domain.Tests", "src\EducacaoOnline.PagamentoEFaturamento.Domain.Tests\EducacaoOnline.PagamentoEFaturamento.Domain.Tests.csproj", "{C9699691-F5B9-4ED6-9119-3C46EBE2664F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +35,22 @@ Global
 		{F39CD69D-F042-4727-91E1-42BE7E86F324}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F39CD69D-F042-4727-91E1-42BE7E86F324}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F39CD69D-F042-4727-91E1-42BE7E86F324}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFC7F3AB-962A-42C3-A1A8-CB6C6506DA96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFC7F3AB-962A-42C3-A1A8-CB6C6506DA96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFC7F3AB-962A-42C3-A1A8-CB6C6506DA96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFC7F3AB-962A-42C3-A1A8-CB6C6506DA96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{169EE781-A4CF-46C4-94B9-216F7F59FC2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{169EE781-A4CF-46C4-94B9-216F7F59FC2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{169EE781-A4CF-46C4-94B9-216F7F59FC2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{169EE781-A4CF-46C4-94B9-216F7F59FC2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{735F34B3-B126-42FC-A224-2D902ED53D4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{735F34B3-B126-42FC-A224-2D902ED53D4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{735F34B3-B126-42FC-A224-2D902ED53D4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{735F34B3-B126-42FC-A224-2D902ED53D4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9699691-F5B9-4ED6-9119-3C46EBE2664F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9699691-F5B9-4ED6-9119-3C46EBE2664F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9699691-F5B9-4ED6-9119-3C46EBE2664F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9699691-F5B9-4ED6-9119-3C46EBE2664F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

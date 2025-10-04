@@ -1,9 +1,13 @@
 ﻿
+using FluentValidation.Results;
+
 namespace EducacaoOnline.GestaoDeConteudo.Domain
 {
     [Serializable]
     public class DomainException : Exception
     {
+        public string[] RegrasVioladas = [];
+
         public DomainException()
         {
         }
@@ -14,6 +18,12 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
 
         public DomainException(string? message, Exception? innerException) : base(message, innerException)
         {
+        }
+
+        public DomainException(string? message, List<ValidationFailure>? validationFailures) : base(message)
+        {
+            if (validationFailures is not null)
+                RegrasVioladas = [.. validationFailures.Select(vf => vf.ErrorMessage)];
         }
     }
 }
