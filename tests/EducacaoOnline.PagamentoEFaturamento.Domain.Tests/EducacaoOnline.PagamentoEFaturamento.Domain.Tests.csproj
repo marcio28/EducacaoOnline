@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EducacaoOnline.PagamentoEFaturamento.Domain\EducacaoOnline.PagamentoEFaturamento.Domain.csproj" />
+    <ProjectReference Include="..\..\src\EducacaoOnline.PagamentoEFaturamento.Domain\EducacaoOnline.PagamentoEFaturamento.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,11 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.Core", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeAlunos.Domain", "src\EducacaoOnline.GestaoDeAlunos.Domain\EducacaoOnline.GestaoDeAlunos.Domain.csproj", "{EFC7F3AB-962A-42C3-A1A8-CB6C6506DA96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeAlunos.Domain.Tests", "src\EducacaoOnline.GestaoDeAlunos.Domain.Tests\EducacaoOnline.GestaoDeAlunos.Domain.Tests.csproj", "{169EE781-A4CF-46C4-94B9-216F7F59FC2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoDeAlunos.Domain.Tests", "tests\EducacaoOnline.GestaoDeAlunos.Domain.Tests\EducacaoOnline.GestaoDeAlunos.Domain.Tests.csproj", "{169EE781-A4CF-46C4-94B9-216F7F59FC2F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFaturamento.Domain", "src\EducacaoOnline.PagamentoEFaturamento.Domain\EducacaoOnline.PagamentoEFaturamento.Domain.csproj", "{735F34B3-B126-42FC-A224-2D902ED53D4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFaturamento.Domain.Tests", "src\EducacaoOnline.PagamentoEFaturamento.Domain.Tests\EducacaoOnline.PagamentoEFaturamento.Domain.Tests.csproj", "{C9699691-F5B9-4ED6-9119-3C46EBE2664F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFaturamento.Domain.Tests", "tests\EducacaoOnline.PagamentoEFaturamento.Domain.Tests\EducacaoOnline.PagamentoEFaturamento.Domain.Tests.csproj", "{C9699691-F5B9-4ED6-9119-3C46EBE2664F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
