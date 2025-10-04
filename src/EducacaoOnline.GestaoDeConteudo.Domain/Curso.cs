@@ -24,7 +24,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
             return ehValido;
         }
 
-        public void TornarDisponivelParaMatricula()
+        public void DisponibilizarMatricula()
         {
             if (!EhValido())
                 throw new DisponibilizacaoDeCursoInvalidoException();

@@ -5,9 +5,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 {
     public class AulaTests
     {
-        [Fact(DisplayName = "Aula Nova Válida")]
+        [Fact(DisplayName = "Aula Nova Sem Violacoes É Válida")]
         [Trait("Categoria", "Gestão de Conteúdo - Aula")]
-        public void CriarAula_AulaNova_DeveSerValida()
+        public void AulaNova_SemViolacoes_EhValida()
         {
             // Arrange & Act
             var aula = new Aula(idCurso: Guid.NewGuid(),
@@ -19,9 +19,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             Assert.Equal(0, aula.ValidationResult?.Errors.Count);
         }
 
-        [Fact(DisplayName = "Aula Nova Inválida")]
+        [Fact(DisplayName = "Aula Nova Com Violações É Inválida")]
         [Trait("Categoria", "Gestão de Conteúdo - Aula")]
-        public void CriarAula_AulaNova_DeveSerInvalida()
+        public void AulaNova_ComViolacoes_EhInvalida()
         {
             // Arrange & Act
             var aula = new Aula(idCurso: Guid.Empty,
