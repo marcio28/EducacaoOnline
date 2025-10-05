@@ -44,8 +44,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
                                 titulo: titulo,
                                 conteudo: conteudo,
                                 nomeArquivoMaterial: default);
-            if (!aula.EhValido()) throw new DomainException(message: "Aula inválida",
-                                                            validationFailures: aula.ValidationResult?.Errors);
+            if (!aula.EhValido()) throw new AulaInvalidaException(validationFailures: aula.ValidationResult?.Errors);
 
             Aulas!.Add(aula);
         }

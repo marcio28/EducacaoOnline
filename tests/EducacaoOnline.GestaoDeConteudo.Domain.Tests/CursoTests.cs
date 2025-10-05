@@ -91,7 +91,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             var tituloAula = "I";
 
             // Act && Assert
-            var excecao = Assert.Throws<DomainException>(() => curso.AdicionarAula(tituloAula, conteudo: "A"));
+            var excecao = Assert.Throws<AulaInvalidaException>(() => curso.AdicionarAula(tituloAula, conteudo: "A"));
 
             var regrasVioladas = excecao.RegrasVioladas;
             Assert.NotNull(regrasVioladas);
