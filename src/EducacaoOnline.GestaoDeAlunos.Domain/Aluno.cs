@@ -1,5 +1,6 @@
 ﻿
 using EducacaoOnline.Core.DomainObjects;
+using EducacaoOnline.GestaoDeAlunos.Domain.Exceptions;
 using System.Collections.ObjectModel;
 
 namespace EducacaoOnline.GestaoDeAlunos.Domain
@@ -10,7 +11,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain
 
         public Matricula IniciarMatricula(Curso curso)
         {
-            if (curso.DisponivelMatricula is false) throw new DomainException(message: "Curso indisponível para matrícula.");
+            if (curso.DisponivelMatricula is false) throw new MatriculaCursoIndisponivelException();
 
             var matricula = new Matricula(idAluno: this.Id,
                                           idCurso: curso.Id);
