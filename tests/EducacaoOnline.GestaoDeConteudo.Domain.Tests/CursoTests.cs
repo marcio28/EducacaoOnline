@@ -42,7 +42,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             curso.DisponibilizarMatricula();
 
             // Assert
-            Assert.True(curso.DisponivelParaMatricula);
+            Assert.True(curso.DisponivelMatricula);
         }
 
         [Fact(DisplayName = "Disponibilizar Curso Inválido Lança Exceção")]
@@ -54,8 +54,8 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
                                   conteudoProgramatico: new ConteudoProgramatico("A"));
 
             // Act & Assert
-            var exception = Assert.Throws<DisponibilizacaoDeCursoInvalidoException>(() => curso.DisponibilizarMatricula());
-            Assert.False(curso.DisponivelParaMatricula);
+            var exception = Assert.Throws<DisponibilizacaoCursoInvalidoException>(() => curso.DisponibilizarMatricula());
+            Assert.False(curso.DisponivelMatricula);
         }
 
         [Fact(DisplayName = "Adicionar Aula Válida")]
@@ -87,10 +87,10 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             var curso = new Curso(nome: "Curso de C#",
                                   conteudoProgramatico: new ConteudoProgramatico("Conteúdo Programático do Curso de C#"));
             var quantidadeAulasAntes = curso.Aulas?.Count ?? 0;
-            var tituloDaAula = "I";
+            var tituloAula = "I";
 
             // Act && Assert
-            var excecao = Assert.Throws<DomainException>(() => curso.AdicionarAula(tituloDaAula, conteudo: "A"));
+            var excecao = Assert.Throws<DomainException>(() => curso.AdicionarAula(tituloAula, conteudo: "A"));
 
             var regrasVioladas = excecao.RegrasVioladas;
             Assert.NotNull(regrasVioladas);
@@ -99,7 +99,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             var quantidadeAulasDepois = curso.Aulas?.Count ?? 0;
             Assert.Equal(quantidadeAulasAntes, quantidadeAulasDepois);
 
-            Assert.DoesNotContain(curso.Aulas ?? [], a => a.Titulo.Equals(tituloDaAula, StringComparison.OrdinalIgnoreCase));
+            Assert.DoesNotContain(curso.Aulas ?? [], a => a.Titulo.Equals(tituloAula, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

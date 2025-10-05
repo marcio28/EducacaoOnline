@@ -10,7 +10,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
     {
         public string Nome { get; private set; } = nome;
         public ConteudoProgramatico ConteudoProgramatico { get; private set; } = conteudoProgramatico;
-        public bool DisponivelParaMatricula { get; private set; } = true;
+        public bool DisponivelMatricula { get; private set; } = false;
         public Collection<Aula>? Aulas { get; private set; } = [];
 
         public override bool EhValido() 
@@ -19,7 +19,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
 
             var ehValido = ValidationResult.IsValid;
             if (!ehValido)
-                TornarIndisponivelParaMatricula();
+                TornarIndisponivelMatricula();
 
             return ehValido;
         }
@@ -27,17 +27,20 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
         public void DisponibilizarMatricula()
         {
             if (!EhValido())
-                throw new DisponibilizacaoDeCursoInvalidoException();
+                throw new DisponibilizacaoCursoInvalidoException();
         }
 
-        public void TornarIndisponivelParaMatricula()
+        public void TornarIndisponivelMatricula()
         {
-            DisponivelParaMatricula = false;
+            DisponivelMatricula = false;
         }
 
         public void AdicionarAula(string titulo, string conteudo)
         {
-            var aula = new Aula(this.Id, titulo, conteudo);
+            var aula = new Aula(idCurso: this.Id,
+                                titulo: titulo,
+                                conteudo: conteudo,
+                                nomeArquivoMaterial: default);
             if (!aula.EhValido()) throw new DomainException(message: "Aula inválida",
                                                             validationFailures: aula.ValidationResult?.Errors);
 

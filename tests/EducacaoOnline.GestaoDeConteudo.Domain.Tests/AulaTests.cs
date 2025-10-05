@@ -12,7 +12,8 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             // Arrange & Act
             var aula = new Aula(idCurso: Guid.NewGuid(),
                                 titulo: "Introdução", 
-                                conteudo: "Apresentação do curso, do professor e dos objetivos do curso.");
+                                conteudo: "Apresentação do curso, do professor e dos objetivos do curso.",
+                                nomeArquivoMaterial: default);
 
             // Assert
             Assert.True(aula.EhValido());
@@ -26,7 +27,8 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             // Arrange & Act
             var aula = new Aula(idCurso: Guid.Empty,
                                 titulo: "I",
-                                conteudo: "A");
+                                conteudo: "A",
+                                nomeArquivoMaterial: default);
 
             // Assert
             Assert.False(aula.EhValido());
