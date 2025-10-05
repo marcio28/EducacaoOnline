@@ -18,12 +18,23 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
             var matricula = aluno.IniciarMatricula(cursoSelecionado);
 
             // Assert
-            Assert.Equal(0, aluno.ValidationResult?.Errors.Count ?? 0);
-            var quatidadeMatriculasDepois = aluno.Matriculas.Count;
-            Assert.Equal(quatidadeMatriculasAntes + 1, quatidadeMatriculasDepois);
-            Assert.Equal(aluno.Id, matricula.IdAluno);
-            Assert.Equal(cursoSelecionado.Id, matricula.IdCurso);
-            Assert.Equal(StatusMatricula.AguardandoPagamento, matricula.Status);
+            var semViolacoes = (aluno.ValidationResult?.Errors.Count == 0);
+            Assert.True(semViolacoes);
+
+            var matriculaCriada = (matricula is not null);
+            Assert.True(matriculaCriada);
+
+            var matriculaDoAlunoCorreto = (matricula?.IdAluno.Equals(aluno.Id));
+            Assert.True(matriculaDoAlunoCorreto);
+
+            var matriculaDoCursoCorreto = (matricula?.IdCurso.Equals(cursoSelecionado.Id));
+            Assert.True(matriculaDoCursoCorreto);
+
+            var matriculaAguardandoPagamento = (matricula?.Status.Equals(StatusMatricula.AguardandoPagamento));
+            Assert.True(matriculaAguardandoPagamento);
+
+            var umaMatriculaAMais = (aluno.Matriculas.Count.Equals(quatidadeMatriculasAntes + 1));
+            Assert.True(umaMatriculaAMais);
         }
 
         [Fact(DisplayName = "Iniciar Matrícula Indisponível Lança Exceção")]
@@ -35,7 +46,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
             var cursoSelecionado = new Curso(disponivelMatricula: false);
 
             // Act && Assert
-            var excecao = Assert.Throws<MatriculaCursoIndisponivelException>(() => aluno.IniciarMatricula(cursoSelecionado));
+            Assert.Throws<MatriculaCursoIndisponivelException>(() => aluno.IniciarMatricula(cursoSelecionado));
         }
     }
 }
