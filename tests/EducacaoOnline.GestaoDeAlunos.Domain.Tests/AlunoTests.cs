@@ -1,5 +1,5 @@
 ﻿
-using EducacaoOnline.Core.DomainObjects;
+using EducacaoOnline.GestaoDeAlunos.Domain.Exceptions;
 
 namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
 {
@@ -35,7 +35,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
             var cursoSelecionado = new Curso(disponivelMatricula: false);
 
             // Act && Assert
-            var excecao = Assert.Throws<DomainException>(() => aluno.IniciarMatricula(cursoSelecionado));
+            var excecao = Assert.Throws<MatriculaCursoIndisponivelException>(() => aluno.IniciarMatricula(cursoSelecionado));
         }
     }
 }
