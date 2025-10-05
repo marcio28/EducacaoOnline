@@ -5,14 +5,16 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
     public class Aula : Entity
     {
         public Guid IdCurso { get; }
-        public string Titulo { get; private set; }
-        public string Conteudo { get; private set;  }
- 
-        public Aula(Guid idCurso, string titulo, string conteudo)
+        public string Titulo { get; private set; } = string.Empty;
+        public string Conteudo { get; private set; } = string.Empty;
+        public string NomeArquivoMaterial { get; private set; } = string.Empty;
+
+        public Aula(Guid idCurso, string titulo, string conteudo, string? nomeArquivoMaterial)
         {
             IdCurso = idCurso;
             Titulo = titulo;
             Conteudo = conteudo;
+            NomeArquivoMaterial = nomeArquivoMaterial ?? string.Empty;
         }
 
         public override bool EhValido()
