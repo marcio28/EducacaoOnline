@@ -28,6 +28,8 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
         {
             if (!EhValido())
                 throw new DisponibilizacaoCursoInvalidoException();
+
+            DisponivelMatricula = true;
         }
 
         public void TornarIndisponivelMatricula()

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace EducacaoOnline.GestaoDeConteudo.Domain
+namespace EducacaoOnline.GestaoDeConteudo.Domain.Validators
 {
     public class AulaValidator : AbstractValidator<Aula>
     {

@@ -4,9 +4,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 {
     public class CursoTests
     {
-        [Fact(DisplayName = "Curso Novo Sem Regras Violadas É Válido")]
+        [Fact(DisplayName = "Curso Novo Sem Violações É Válido")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void CursoNovo_SemRegrasVioladas_EhValido()
+        public void CursoNovo_SemViolacoes_EhValido()
         {
             // Arrange & Act
             var curso = new Curso(nome: "Curso de C#",
@@ -17,9 +17,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             Assert.Equal(0, curso.ValidationResult?.Errors.Count);
         }
 
-        [Fact(DisplayName = "Curso Novo Com Regras Violadas É Inválido")]
+        [Fact(DisplayName = "Curso Novo Com Violacoes É Inválido")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void CursoNovo_ComRegrasVioladas_EhInvalido()
+        public void CursoNovo_ComViolacoes_EhInvalido()
         {
             // Arrange && Act
             var curso = new Curso(nome: "A",
@@ -58,9 +58,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             Assert.False(curso.DisponivelMatricula);
         }
 
-        [Fact(DisplayName = "Adicionar Aula Válida")]
+        [Fact(DisplayName = "Adicionar Aula Válida Associa Curso")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void AdicionarAula_Valida()
+        public void AdicionarAula_Valida_AssociaCurso()
         {
             // Arrange
             var curso = new Curso(nome: "Curso de C#",
