@@ -1,4 +1,6 @@
 ﻿
+using EducacaoOnline.Core.DomainObjects;
+
 namespace EducacaoOnline.GestaoDeConteudo.Domain.Exceptions
 {
     public class DisponibilizacaoCursoInvalidoException : DomainException

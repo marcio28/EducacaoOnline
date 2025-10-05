@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Xunit;
-
+﻿
 namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 {
     public class AulaTests

@@ -1,4 +1,5 @@
 ﻿
+using EducacaoOnline.Core.DomainObjects;
 using EducacaoOnline.GestaoDeConteudo.Domain.Exceptions;
 using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
 using System.Collections.ObjectModel;

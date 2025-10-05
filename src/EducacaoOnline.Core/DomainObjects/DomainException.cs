@@ -1,7 +1,6 @@
-﻿
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 
-namespace EducacaoOnline.GestaoDeConteudo.Domain
+namespace EducacaoOnline.Core.DomainObjects
 {
     [Serializable]
     public class DomainException : Exception

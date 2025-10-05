@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace EducacaoOnline.GestaoDeConteudo.Domain
+namespace EducacaoOnline.Core.DomainObjects
 {
     public abstract class Entity
     {

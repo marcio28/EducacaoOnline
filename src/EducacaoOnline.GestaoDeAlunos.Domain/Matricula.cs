@@ -1,4 +1,5 @@
-﻿using EducacaoOnline.GestaoDeConteudo.Domain;
+﻿
+using EducacaoOnline.Core.DomainObjects;
 
 namespace EducacaoOnline.GestaoDeAlunos.Domain
 {

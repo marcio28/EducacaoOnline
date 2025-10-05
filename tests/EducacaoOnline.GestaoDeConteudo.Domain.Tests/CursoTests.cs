@@ -1,3 +1,4 @@
+using EducacaoOnline.Core.DomainObjects;
 using EducacaoOnline.GestaoDeConteudo.Domain.Exceptions;
 
 namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests

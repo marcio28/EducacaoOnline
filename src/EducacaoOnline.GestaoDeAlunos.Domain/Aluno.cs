@@ -1,5 +1,5 @@
 ﻿
-using EducacaoOnline.GestaoDeConteudo.Domain;
+using EducacaoOnline.Core.DomainObjects;
 using System.Collections.ObjectModel;
 
 namespace EducacaoOnline.GestaoDeAlunos.Domain
@@ -8,10 +8,12 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain
     {
         public Collection<Matricula> Matriculas { get; private set; } = [];
 
-        public Matricula IniciarMatricula(Guid idCurso)
+        public Matricula IniciarMatricula(Curso curso)
         {
+            if (curso.DisponivelMatricula is false) throw new DomainException(message: "Curso indisponível para matrícula.");
+
             var matricula = new Matricula(idAluno: this.Id,
-                                          idCurso: idCurso);
+                                          idCurso: curso.Id);
 
             Matriculas.Add(matricula);
 

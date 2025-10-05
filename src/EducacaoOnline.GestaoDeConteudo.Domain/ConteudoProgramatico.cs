@@ -1,4 +1,5 @@
-﻿namespace EducacaoOnline.GestaoDeConteudo.Domain
+﻿
+namespace EducacaoOnline.GestaoDeConteudo.Domain
 {
     public class ConteudoProgramatico(string descricao)
     {

@@ -1,4 +1,5 @@
-﻿using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
+﻿using EducacaoOnline.Core.DomainObjects;
+using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
 
 namespace EducacaoOnline.GestaoDeConteudo.Domain
 {
