@@ -6,12 +6,15 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
     public class PagamentoTests
     {
         [Fact(DisplayName = "Realizar Pagamento Sem Violacoes Ativa Matrícula")]
-        [Trait("Categoria", "Pagamento e Faturamento")]
+        [Trait("Categoria", "Pagamento e Faturamento - Pagamento")]
         public void Trocar_Nome_Metodo()
         {
             // Arrange
             var matricula = new Matricula();
-            var dadosCartao = new DadosCartao();
+            var dadosCartao = new DadosCartao(nomeTitular: "Nome Teste",
+                                              numeroCartao: "1234567890123456",
+                                              codigoSeguranca: "123",
+                                              dataValidade: DateTime.Now.AddYears(1));
             var pagamento = new Pagamento(idMatricula: matricula.Id);
 
             // Act
