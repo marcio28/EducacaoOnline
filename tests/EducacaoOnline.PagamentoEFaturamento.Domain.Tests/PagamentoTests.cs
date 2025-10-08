@@ -5,9 +5,9 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
 {
     public class PagamentoTests
     {
-        [Fact(DisplayName = "Realizar Pagamento Sem Violacoes Ativa Matrícula")]
+        [Fact(DisplayName = "Realizar Pagamento Sem Erros Ativa Matrícula")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento")]
-        public void Trocar_Nome_Metodo()
+        public void RealizarPagamento_SemErros_AtivaMatricula()
         {
             // Arrange
             var matricula = new Matricula();
@@ -21,10 +21,9 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
             pagamento.Realizar(dadosCartao);
 
             // Assert
-            var semViolacoes = (pagamento.ValidationResult?.Errors.Count == 0);
-            Assert.True(semViolacoes);
-
+            Assert.Equal(0, pagamento.QuantidadeErros);
             Assert.True(pagamento.EhValido());
+            // TODO: continuar
         }
     }
 }

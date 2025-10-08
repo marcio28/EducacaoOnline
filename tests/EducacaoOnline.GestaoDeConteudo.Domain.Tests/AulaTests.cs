@@ -1,4 +1,6 @@
 ﻿
+using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
+
 namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 {
     public class AulaTests
@@ -31,6 +33,13 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             // Assert
             Assert.False(aula.EhValido());
             Assert.Equal(3, aula.ValidationResult?.Errors.Count);
+            Assert.Contains(AulaValidator.IdCursoObrigatorioErroMsg,
+                            aula.ValidationResult?.Errors.Select(c => c.ErrorMessage) ?? []);
+            Assert.Contains(AulaValidator.TamanhoTituloErroMsg,
+                            aula.ValidationResult?.Errors.Select(c => c.ErrorMessage) ?? []);
+            Assert.Contains(AulaValidator.TamanhoConteudoErroMsg,
+                            aula.ValidationResult?.Errors.Select(c => c.ErrorMessage) ?? []);
+
         }
     }
 }

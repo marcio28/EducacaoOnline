@@ -2,17 +2,27 @@
 using EducacaoOnline.Core.DomainObjects;
 using EducacaoOnline.GestaoDeConteudo.Domain.Exceptions;
 using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
+using FluentValidation.Results;
 using System.Collections.ObjectModel;
 
 namespace EducacaoOnline.GestaoDeConteudo.Domain
 {
-    public class Curso(string nome, 
-                       ConteudoProgramatico conteudoProgramatico) : Entity
+    public class Curso : Entity
     {
-        public string Nome { get; private set; } = nome;
-        public ConteudoProgramatico ConteudoProgramatico { get; private set; } = conteudoProgramatico;
-        public bool DisponivelMatricula { get; private set; } = false;
-        public Collection<Aula>? Aulas { get; private set; } = [];
+        public string Nome { get; private set; }
+        public ConteudoProgramatico ConteudoProgramatico { get; private set; }
+        public bool DisponivelMatricula { get; private set; }
+        public Collection<Aula>? Aulas { get; private set; }
+        public int QuantidadeAulas => Aulas?.Count ?? 0;
+
+        public Curso(string nome,
+                     ConteudoProgramatico conteudoProgramatico)
+        {
+            Nome = nome;
+            ConteudoProgramatico = conteudoProgramatico;
+            DisponivelMatricula = false;
+            Aulas = [];
+        }
 
         public override bool EhValido() 
         {
@@ -38,15 +48,20 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
             DisponivelMatricula = false;
         }
 
-        public void AdicionarAula(string titulo, string conteudo)
+        public Aula AdicionarAula(string titulo, string conteudo)
         {
             var aula = new Aula(idCurso: this.Id,
                                 titulo: titulo,
                                 conteudo: conteudo,
                                 nomeArquivoMaterial: default);
-            if (!aula.EhValido()) throw new AulaInvalidaException(validationFailures: aula.ValidationResult?.Errors);
 
-            Aulas!.Add(aula);
+            if (aula.EhValido())
+            {
+                Aulas ??= [];
+                Aulas.Add(aula);
+            }
+
+            return aula;
         }
     }
 }

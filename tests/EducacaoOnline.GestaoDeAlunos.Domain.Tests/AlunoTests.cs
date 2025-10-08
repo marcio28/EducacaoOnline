@@ -5,36 +5,25 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
 {
     public class AlunoTests
     {
-        [Fact(DisplayName = "Iniciar Matrícula Sem Violações Aguarda Pagamento")]
+        [Fact(DisplayName = "Iniciar Matrícula Sem Erros Aguarda Pagamento")]
         [Trait("Categoria", "Gestão de Alunos - Aluno")]
-        public void IniciarMatricula_SemViolacoes_AguardaPagamento()
+        public void IniciarMatricula_SemErros_AguardaPagamento()
         {
             // Arrange
             var aluno = new Aluno();
             var cursoSelecionado = new Curso(disponivelMatricula: true);
-            var quatidadeMatriculasAntes = aluno.Matriculas.Count;
+            var quatidadeMatriculasAntes = aluno.QuantidadeMatriculas;
 
             // Act
             var matricula = aluno.IniciarMatricula(cursoSelecionado);
 
             // Assert
-            var semViolacoes = (aluno.ValidationResult?.Errors.Count == 0);
-            Assert.True(semViolacoes);
-
-            var matriculaCriada = (matricula is not null);
-            Assert.True(matriculaCriada);
-
-            var matriculaDoAlunoCorreto = (matricula?.IdAluno.Equals(aluno.Id));
-            Assert.True(matriculaDoAlunoCorreto);
-
-            var matriculaDoCursoCorreto = (matricula?.IdCurso.Equals(cursoSelecionado.Id));
-            Assert.True(matriculaDoCursoCorreto);
-
-            var matriculaAguardandoPagamento = (matricula?.Status.Equals(StatusMatricula.AguardandoPagamento));
-            Assert.True(matriculaAguardandoPagamento);
-
-            var umaMatriculaAMais = (aluno.Matriculas.Count.Equals(quatidadeMatriculasAntes + 1));
-            Assert.True(umaMatriculaAMais);
+            Assert.Equal(0, aluno.QuantidadeErros);
+            Assert.NotNull(matricula);
+            Assert.Equal(aluno.Id, matricula?.IdAluno);
+            Assert.Equal(cursoSelecionado.Id, matricula?.IdCurso);
+            Assert.Equal(StatusMatricula.AguardandoPagamento, matricula?.Status);
+            Assert.Equal(quatidadeMatriculasAntes + 1, aluno.QuantidadeMatriculas);
         }
 
         [Fact(DisplayName = "Iniciar Matrícula Indisponível Lança Exceção")]

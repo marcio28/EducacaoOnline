@@ -8,6 +8,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain
     public class Aluno : Entity
     {
         public Collection<Matricula> Matriculas { get; private set; } = [];
+        public int QuantidadeMatriculas => Matriculas.Count;
 
         public Matricula IniciarMatricula(Curso curso)
         {

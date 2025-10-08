@@ -4,21 +4,20 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Validators
 {
     public class AulaValidator : AbstractValidator<Aula>
     {
+        public static string IdCursoObrigatorioErroMsg => "O Id do curso deve ser informado.";
+        public static string TamanhoTituloErroMsg => "O título deve conter 2 a 100 caracteres.";
+        public static string TamanhoConteudoErroMsg => "O conteúdo deve conter 10 a 500 caracteres.";
+
         public AulaValidator()
         {
-            RuleFor(a => a.Id)
-                .NotEqual(Guid.Empty);
-
             RuleFor(a => a.IdCurso)
-                .NotEqual(Guid.Empty).WithMessage("O Id do curso deve ser informado.");
+                .NotEqual(Guid.Empty).WithMessage(IdCursoObrigatorioErroMsg);
 
             RuleFor(a => a.Titulo)
-                .NotEmpty().WithMessage("O campo Título é obrigatório.")
-                .Length(2, 100).WithMessage("O título deve conter 2 a 100 caracteres.");
+                .Length(2, 100).WithMessage(TamanhoTituloErroMsg);
 
             RuleFor(a => a.Conteudo)
-                .NotEmpty().WithMessage("É obrigatório descrever o conteúdo da aula.")
-                .Length(10, 500).WithMessage("A descrição deve conter 10 a 500 caracteres.");
+                .Length(10, 500).WithMessage(TamanhoConteudoErroMsg);
         }
     }
 }

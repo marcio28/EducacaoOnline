@@ -1,13 +1,14 @@
 using EducacaoOnline.Core.DomainObjects;
 using EducacaoOnline.GestaoDeConteudo.Domain.Exceptions;
+using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
 
 namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 {
     public class CursoTests
     {
-        [Fact(DisplayName = "Curso Novo Sem Violações É Válido")]
+        [Fact(DisplayName = "Curso Novo Sem Erros É Válido")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void CursoNovo_SemViolacoes_EhValido()
+        public void CursoNovo_SemErros_EhValido()
         {
             // Arrange & Act
             var curso = new Curso(nome: "Curso de C#",
@@ -15,12 +16,12 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 
             // Assert
             Assert.True(curso.EhValido());
-            Assert.Equal(0, curso.ValidationResult?.Errors.Count);
+            Assert.Equal(0, curso.QuantidadeErros);
         }
 
-        [Fact(DisplayName = "Curso Novo Com Violacoes É Inválido")]
+        [Fact(DisplayName = "Curso Novo Com Erros É Inválido")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void CursoNovo_ComViolacoes_EhInvalido()
+        public void CursoNovo_ComErros_EhInvalido()
         {
             // Arrange && Act
             var curso = new Curso(nome: "A",
@@ -28,7 +29,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 
             // Assert
             Assert.False(curso.EhValido());
-            Assert.Equal(2, curso.ValidationResult?.Errors.Count);
+            Assert.Equal(2, curso.QuantidadeErros);
+            Assert.Contains(CursoValidator.TamanhoNomeErroMsg, curso.Erros.Select(c => c.ErrorMessage));
+            Assert.Contains(CursoValidator.TamanhoConteudoErroMsg, curso.Erros.Select(c => c.ErrorMessage));
         }
 
         [Fact(DisplayName = "Disponibilizar Curso Válido Recebe Matrícula")]
@@ -43,6 +46,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             curso.DisponibilizarMatricula();
 
             // Assert
+            Assert.True(curso.EhValido());
             Assert.True(curso.DisponivelMatricula);
         }
 
@@ -55,6 +59,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
                                   conteudoProgramatico: new ConteudoProgramatico("A"));
 
             // Act & Assert
+            Assert.False(curso.EhValido());
             var exception = Assert.Throws<DisponibilizacaoCursoInvalidoException>(() => curso.DisponibilizarMatricula());
             Assert.False(curso.DisponivelMatricula);
         }
@@ -66,41 +71,40 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             // Arrange
             var curso = new Curso(nome: "Curso de C#",
                                   conteudoProgramatico: new ConteudoProgramatico("Conteúdo Programático do Curso de C#"));
-            var quantidadeAulasAntes = curso.Aulas?.Count ?? 0;
+            var quantidadeAulasAntes = curso.QuantidadeAulas;
             var tituloDaAula = "Introdução";
 
             // Act
-            curso.AdicionarAula(tituloDaAula, 
+            var aula = curso.AdicionarAula(tituloDaAula, 
                                 conteudo: "Apresentação do curso, do professor e dos objetivos do curso.");
 
             // Assert
-            var quantidadeAulasDepois = curso.Aulas?.Count ?? 0;
-            Assert.Equal(quantidadeAulasAntes + 1, quantidadeAulasDepois);
+            Assert.True(aula.EhValido());
+            Assert.Equal(quantidadeAulasAntes + 1, curso.QuantidadeAulas);
             Assert.Contains(curso.Aulas ?? [], a => a.Titulo.Equals(tituloDaAula, StringComparison.OrdinalIgnoreCase));
         }
 
 
-        [Fact(DisplayName = "Adicionar Aula Inválida Lança Exceção")]
+        [Fact(DisplayName = "Adicionar Aula Inválida Não Adiciona")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void AdicionarAula_Invalida_LancaExcecao()
+        public void AdicionarAula_Invalida_NaoAdiciona()
         {
             // Arrange
             var curso = new Curso(nome: "Curso de C#",
                                   conteudoProgramatico: new ConteudoProgramatico("Conteúdo Programático do Curso de C#"));
-            var quantidadeAulasAntes = curso.Aulas?.Count ?? 0;
+            var quantidadeAulasAntes = curso.QuantidadeAulas;
             var tituloAula = "I";
 
-            // Act && Assert
-            var excecao = Assert.Throws<AulaInvalidaException>(() => curso.AdicionarAula(tituloAula, conteudo: "A"));
+            // Act
+            var aula = curso.AdicionarAula(tituloAula, conteudo: "A");
 
-            var regrasVioladas = excecao.RegrasVioladas;
-            Assert.NotNull(regrasVioladas);
-            Assert.Equal(2, regrasVioladas.Length);
-
-            var quantidadeAulasDepois = curso.Aulas?.Count ?? 0;
-            Assert.Equal(quantidadeAulasAntes, quantidadeAulasDepois);
-
+            // Assert
+            Assert.False(aula.EhValido());
+            Assert.Equal(quantidadeAulasAntes, curso.QuantidadeAulas);
             Assert.DoesNotContain(curso.Aulas ?? [], a => a.Titulo.Equals(tituloAula, StringComparison.OrdinalIgnoreCase));
+            Assert.Equal(2, aula.QuantidadeErros);
+            Assert.Contains(AulaValidator.TamanhoTituloErroMsg, aula.Erros.Select(c => c.ErrorMessage));
+            Assert.Contains(AulaValidator.TamanhoConteudoErroMsg, aula.Erros.Select(c => c.ErrorMessage));
         }
     }
 }
