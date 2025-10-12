@@ -7,6 +7,8 @@ namespace EducacaoOnline.Core.DomainObjects.Messages
     {
         public DateTime Timestamp { get; private set; }
         public ValidationResult? ValidationResult { get; set; }
+        public List<ValidationFailure> Erros => ValidationResult?.Errors ?? [];
+        public int QuantidadeErros => Erros.Count;
 
         protected Command()
         {
