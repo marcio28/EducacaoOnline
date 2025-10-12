@@ -10,10 +10,12 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Validators
         public CursoValidator()
         {
             RuleFor(c => c.Nome)
-                .Length(2, 100).WithMessage(TamanhoNomeErroMsg);
+                .Length(2, 100)
+                .WithMessage(TamanhoNomeErroMsg);
 
             RuleFor(c => c.ConteudoProgramatico.Descricao)
-                .Length(10, 1000).WithMessage(TamanhoConteudoErroMsg);
+                .Length(10, 1000)
+                .WithMessage(TamanhoConteudoErroMsg);
         }
     }
 }
