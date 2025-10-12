@@ -1,4 +1,4 @@
-﻿namespace EducacaoOnline.Core.DomainObjects.Messages
+﻿namespace EducacaoOnline.Core.Messages
 {
     public abstract class Message
     {
