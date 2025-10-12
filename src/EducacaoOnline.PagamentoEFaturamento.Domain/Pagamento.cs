@@ -11,9 +11,5 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain
         {
             IdMatricula = idMatricula;
         }
-
-        public void Realizar(DadosCartao dadosCartao)
-        {
-        }
     }
 }
