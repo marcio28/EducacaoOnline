@@ -1,7 +1,10 @@
 ﻿
+using EducacaoOnline.Core.DomainObjects;
+using EducacaoOnline.PagamentoEFaturamento.Domain.Validators;
+
 namespace EducacaoOnline.PagamentoEFaturamento.Domain
 {
-    public class DadosCartao
+    public class DadosCartao : ValueObject
     {
         public string NomeTitular { get; }
         public string NumeroCartao { get; }
@@ -17,6 +20,13 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain
             NumeroCartao = numeroCartao;
             CodigoSeguranca = codigoSeguranca;
             DataValidade = dataValidade;
+        }
+
+        public override bool EhValido()
+        {
+            ValidationResult = new DadosCartaoValidator().Validate(this);
+
+            return ValidationResult.IsValid;
         }
     }
 }
