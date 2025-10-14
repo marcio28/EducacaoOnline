@@ -1,5 +1,4 @@
-﻿
-namespace EducacaoOnline.GestaoDeAlunos.Domain
+﻿namespace EducacaoOnline.GestaoDeAlunos.Domain
 {
     public enum StatusMatricula
     {

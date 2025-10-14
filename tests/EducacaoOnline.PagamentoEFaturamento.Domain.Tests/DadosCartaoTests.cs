@@ -1,5 +1,4 @@
-﻿
-using EducacaoOnline.PagamentoEFaturamento.Domain.Validators;
+﻿using EducacaoOnline.PagamentoEFaturamento.Domain.Validators;
 
 namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
 {
@@ -7,7 +6,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
     {
         [Fact(DisplayName = "Dados de Cartão Novo Sem Erros É Válido")]
         [Trait("Categoria", "Pagamento e Faturamento - Dados de Cartão")]
-        public void DadosCartaoNovo_SemErros_EhValido()
+        public void DadosCartaoNovo_SemErros_DeveSerValido()
         {
             // Arrange & Act
             var dadosCartao = new DadosCartao(nomeTitular: "Nome Teste",
@@ -21,7 +20,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
 
         [Fact(DisplayName = "Dados de Cartão Novo Com Erros É Inválido")]
         [Trait("Categoria", "Pagamento e Faturamento - Dados de Cartão")]
-        public void DadosCartaoNovo_ComErros_EhInvalido()
+        public void DadosCartaoNovo_ComErros_DeveSerInvalido()
         {
             // Arrange & Act
             var dadosCartao = new DadosCartao(nomeTitular: "",

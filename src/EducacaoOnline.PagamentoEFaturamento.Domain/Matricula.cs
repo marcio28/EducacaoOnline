@@ -1,5 +1,4 @@
-﻿
-using EducacaoOnline.Core.DomainObjects;
+﻿using EducacaoOnline.Core.DomainObjects;
 
 namespace EducacaoOnline.PagamentoEFaturamento.Domain
 {

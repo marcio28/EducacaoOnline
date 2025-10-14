@@ -1,5 +1,4 @@
-﻿
-namespace EducacaoOnline.PagamentoEFaturamento.Domain
+﻿namespace EducacaoOnline.PagamentoEFaturamento.Domain
 {
     public enum StatusMatricula
     {

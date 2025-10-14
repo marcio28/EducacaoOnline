@@ -1,4 +1,3 @@
-using EducacaoOnline.Core.DomainObjects;
 using EducacaoOnline.GestaoDeConteudo.Domain.Exceptions;
 using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
 
@@ -8,7 +7,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
     {
         [Fact(DisplayName = "Curso Novo Sem Erros É Válido")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void CursoNovo_SemErros_EhValido()
+        public void CursoNovo_SemErros_DeveSerValido()
         {
             // Arrange & Act
             var curso = new Curso(nome: "Curso de C#",
@@ -21,7 +20,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 
         [Fact(DisplayName = "Curso Novo Com Erros É Inválido")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void CursoNovo_ComErros_EhInvalido()
+        public void CursoNovo_ComErros_DeveSerInvalido()
         {
             // Arrange && Act
             var curso = new Curso(nome: "A",
@@ -34,9 +33,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             Assert.Contains(CursoValidator.TamanhoConteudoErroMsg, curso.Erros.Select(c => c.ErrorMessage));
         }
 
-        [Fact(DisplayName = "Disponibilizar Curso Válido Recebe Matrícula")]
+        [Fact(DisplayName = "Disponibilizar Curso Válido Disponível Para Matrícula")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void Disponibilizar_CursoValido_RecebeMatricula()
+        public void Disponibilizar_CursoValido_DeveFicarDisponivelMatricula()
         {
             // Arrange
             var curso = new Curso(nome: "Curso de C#",
@@ -52,7 +51,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 
         [Fact(DisplayName = "Disponibilizar Curso Inválido Lança Exceção")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void Disponibilizar_CursoInvalido_LancaExcecao()
+        public void Disponibilizar_CursoInvalido_DeveLancarExcecao()
         {
             // Arrange
             var curso = new Curso(nome: "A",
@@ -64,9 +63,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
             Assert.False(curso.DisponivelMatricula);
         }
 
-        [Fact(DisplayName = "Adicionar Aula Válida Associa Curso")]
+        [Fact(DisplayName = "Adicionar Aula Válida Associada A Curso")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void AdicionarAula_Valida_AssociaCurso()
+        public void AdicionarAula_Valida_DeveSerAssociadaACurso()
         {
             // Arrange
             var curso = new Curso(nome: "Curso de C#",
@@ -76,7 +75,7 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 
             // Act
             var aula = curso.AdicionarAula(tituloDaAula, 
-                                conteudo: "Apresentação do curso, do professor e dos objetivos do curso.");
+                                           conteudo: "Apresentação do curso, do professor e dos objetivos do curso.");
 
             // Assert
             Assert.True(aula.EhValido());
@@ -85,9 +84,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
         }
 
 
-        [Fact(DisplayName = "Adicionar Aula Inválida Não Adiciona")]
+        [Fact(DisplayName = "Adicionar Aula Inválida Não Adicionada")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void AdicionarAula_Invalida_NaoAdiciona()
+        public void AdicionarAula_Invalida_NaoDeveSerAdicionada()
         {
             // Arrange
             var curso = new Curso(nome: "Curso de C#",

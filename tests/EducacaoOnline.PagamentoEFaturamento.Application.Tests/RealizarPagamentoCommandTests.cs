@@ -8,7 +8,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
     {
         [Fact(DisplayName = "Realizar Pagamento Sem Erros É Válido")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento Commands")]
-        public void RealizarPagamentoCommand_SemErros_EhValido()
+        public void RealizarPagamento_SemErros_DeveSerValido()
         {
             // Arrange
             var matricula = new Matricula(statusMatricula: StatusMatricula.AguardandoPagamento);
@@ -28,7 +28,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
 
         [Fact(DisplayName = "Realizar Pagamento Matricula Não Aguarda Pagamento É Inválido")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento Commands")]
-        public void RealizarPagamentoCommand_MatriculaNaoAguardaPagamento_EhInvalido()
+        public void RealizarPagamento_MatriculaNaoAguardaPagamento_DeveSerInvalido()
         {
             // Arrange
             var matricula = new Matricula(statusMatricula: StatusMatricula.Ativa);
@@ -49,7 +49,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
 
         [Fact(DisplayName = "Realizar Pagamento Dados Cartão Com Erros É Inválido")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento Commands")]
-        public void RealizarPagamentoCommand_DadosCartaoComErros_EhInvalido()
+        public void RealizarPagamento_DadosCartaoComErros_DeveSerInvalido()
         {
             // Arrange
             var matricula = new Matricula(statusMatricula: StatusMatricula.AguardandoPagamento);

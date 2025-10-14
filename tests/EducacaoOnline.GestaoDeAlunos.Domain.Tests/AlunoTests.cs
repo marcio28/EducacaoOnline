@@ -1,5 +1,4 @@
-﻿
-using EducacaoOnline.GestaoDeAlunos.Domain.Exceptions;
+﻿using EducacaoOnline.GestaoDeAlunos.Domain.Exceptions;
 
 namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
 {
@@ -7,7 +6,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
     {
         [Fact(DisplayName = "Iniciar Matrícula Sem Erros Aguarda Pagamento")]
         [Trait("Categoria", "Gestão de Alunos - Aluno")]
-        public void IniciarMatricula_SemErros_AguardaPagamento()
+        public void IniciarMatricula_SemErros_DeveAguardarPagamento()
         {
             // Arrange
             var aluno = new Aluno();
@@ -28,7 +27,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
 
         [Fact(DisplayName = "Iniciar Matrícula Indisponível Lança Exceção")]
         [Trait("Categoria", "Gestão de Alunos - Aluno")]
-        public void IniciarMatricula_Indisponivel_LancaExcecao()
+        public void IniciarMatricula_Indisponivel_DeveLancarExcecao()
         {
             // Arrange
             var aluno = new Aluno();
