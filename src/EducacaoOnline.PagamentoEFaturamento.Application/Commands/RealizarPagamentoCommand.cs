@@ -8,6 +8,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
     public class RealizarPagamentoCommand : Command
     {
         public Matricula Matricula { get; }
+        public Guid IdMatricula => Matricula.Id;
         public StatusMatricula StatusMatricula => Matricula.Status;
         public DadosCartao DadosCartao { get; }
         public List<ValidationFailure> ErrosCartao => DadosCartao.ValidationResult?.Errors ?? [];
