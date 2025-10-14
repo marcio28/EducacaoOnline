@@ -1,5 +1,7 @@
 ﻿using EducacaoOnline.PagamentoEFaturamento.Application.Commands;
+using EducacaoOnline.PagamentoEFaturamento.Application.Events;
 using EducacaoOnline.PagamentoEFaturamento.Domain;
+using MediatR;
 using Moq;
 using Moq.AutoMock;
 
@@ -16,9 +18,9 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
             _pagamentoCommandHandler = _mocker.CreateInstance<PagamentoCommandHandler>();
         }
 
-        [Fact(DisplayName = "Realizar Pagamento Matricula Aguardando Pagamento Deve Ativar Matrícula")]
+        [Fact(DisplayName = "Realizar Pagamento Matrícula Aguardando Pagamento Deve Ativar Matrícula")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento Command Handler")]
-        public async Task RealizarPagamento_MatriculaAguardandoPagamento_DeveAtivarMatricula()
+        public async Task RealizarPagamento_MatriculaAguardandoPagamento_DeveAtivarMatriculaELancarEventoPagamentoRealizado()
         {
             // Arrange
             var matricula = new Matricula(statusMatricula: StatusMatricula.AguardandoPagamento);
@@ -36,10 +38,10 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
 
             // Assert
             Assert.True(resultado);
-            _mocker.GetMock<IPagamentoRepository>().Verify(r => r.Adicionar(It.IsAny<Pagamento>()), Times.Once);
-            _mocker.GetMock<IPagamentoRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
             Assert.Equal(StatusMatricula.Ativa, matricula.Status);
-            // TODO: Verificar se o evento de pagamento realizado foi disparado
+            _mocker.GetMock<IPagamentoRepository>().Verify(r => r.Adicionar(It.IsAny<Pagamento>()), Times.Once);
+            //_mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<PagamentoRealizadoEvent>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mocker.GetMock<IPagamentoRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
         }
     }
 }

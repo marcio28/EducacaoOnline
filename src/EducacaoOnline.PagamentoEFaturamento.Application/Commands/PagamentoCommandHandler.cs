@@ -1,6 +1,8 @@
-﻿using EducacaoOnline.PagamentoEFaturamento.Domain;
+﻿using EducacaoOnline.Core.Messages;
+using EducacaoOnline.Core.Messages.Notifications;
+using EducacaoOnline.PagamentoEFaturamento.Application.Events;
+using EducacaoOnline.PagamentoEFaturamento.Domain;
 using MediatR;
-using System.Runtime.CompilerServices;
 
 namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
 {
@@ -16,27 +18,43 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
             _mediator = mediator;
         }
 
-        public Task<bool> Handle(RealizarPagamentoCommand message, CancellationToken cancellationToken)
+        public async Task<bool> Handle(RealizarPagamentoCommand message, CancellationToken cancellationToken)
         {
-            if (!message.EhValido()) return Task.FromResult(false);
+            if (!ValidarComando(message)) return false;
 
-            var pagamento = new Pagamento(idMatricula: message.Matricula.Id);
+            var pagamento = new Pagamento(idMatricula: message.IdMatricula);
 
             if (ProcessarPagamento(message))
             {
                 pagamento.AtualizarStatus(StatusPagamento.Confirmado);
                 var matricula = message.Matricula;
                 matricula.Ativar();
+                pagamento.AdicionarEvento(new PagamentoRealizadoEvent(idPagamento: pagamento.Id,
+                                                                      idMatricula: message.IdMatricula));
             } else
             {
                 pagamento.AtualizarStatus(StatusPagamento.Recusado);
-
+                pagamento.AdicionarEvento(new PagamentoRecusadoEvent(idPagamento: pagamento.Id,
+                                                                     idMatricula: message.IdMatricula,
+                                                                     errosCartao: message.ErrosCartao));
             }
 
             _pagamentoRepository.Adicionar(pagamento);
-            _pagamentoRepository.UnitOfWork.Commit();
+            await _pagamentoRepository.UnitOfWork.Commit();
 
-            return Task.FromResult(pagamento.Status.Equals(StatusPagamento.Confirmado));
+            return pagamento.Status.Equals(StatusPagamento.Confirmado);
+        }
+
+        bool ValidarComando(Command message)
+        {
+            if (message.EhValido()) return true;
+
+            foreach (var error in message.Erros)
+            {
+                _mediator.Publish(new DomainNotification(message.MessageType, error.ErrorMessage));
+            }
+
+            return false;
         }
 
         bool ProcessarPagamento(RealizarPagamentoCommand message)
