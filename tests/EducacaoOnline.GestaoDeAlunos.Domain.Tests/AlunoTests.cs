@@ -4,25 +4,32 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
 {
     public class AlunoTests
     {
+        private readonly Aluno _aluno;
+        private Curso? _curso;
+
+        public AlunoTests()
+        {
+            _aluno = new();
+        }
+
         [Fact(DisplayName = "Iniciar Matrícula Sem Erros Aguarda Pagamento")]
         [Trait("Categoria", "Gestão de Alunos - Aluno")]
         public void IniciarMatricula_SemErros_DeveAguardarPagamento()
         {
             // Arrange
-            var aluno = new Aluno();
-            var cursoSelecionado = new Curso(disponivelMatricula: true);
-            var quatidadeMatriculasAntes = aluno.QuantidadeMatriculas;
+            _curso = new(disponivelMatricula: true);
+            var quatidadeMatriculasAntes = _aluno.QuantidadeMatriculas;
 
             // Act
-            var matricula = aluno.IniciarMatricula(cursoSelecionado);
+            var matricula = _aluno.IniciarMatricula(_curso);
 
             // Assert
-            Assert.Equal(0, aluno.QuantidadeErros);
+            Assert.Equal(0, _aluno.QuantidadeErros);
             Assert.NotNull(matricula);
-            Assert.Equal(aluno.Id, matricula?.IdAluno);
-            Assert.Equal(cursoSelecionado.Id, matricula?.IdCurso);
+            Assert.Equal(_aluno.Id, matricula?.IdAluno);
+            Assert.Equal(_curso.Id, matricula?.IdCurso);
             Assert.Equal(StatusMatricula.AguardandoPagamento, matricula?.Status);
-            Assert.Equal(quatidadeMatriculasAntes + 1, aluno.QuantidadeMatriculas);
+            Assert.Equal(quatidadeMatriculasAntes + 1, _aluno.QuantidadeMatriculas);
         }
 
         [Fact(DisplayName = "Iniciar Matrícula Indisponível Lança Exceção")]
@@ -30,11 +37,10 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
         public void IniciarMatricula_Indisponivel_DeveLancarExcecao()
         {
             // Arrange
-            var aluno = new Aluno();
-            var cursoSelecionado = new Curso(disponivelMatricula: false);
+            _curso = new(disponivelMatricula: false);
 
             // Act && Assert
-            Assert.Throws<MatriculaCursoIndisponivelException>(() => aluno.IniciarMatricula(cursoSelecionado));
+            Assert.Throws<MatriculaCursoIndisponivelException>(() => _aluno.IniciarMatricula(_curso));
         }
     }
 }

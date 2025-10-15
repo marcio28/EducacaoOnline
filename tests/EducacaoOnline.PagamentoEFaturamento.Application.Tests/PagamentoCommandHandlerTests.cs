@@ -1,7 +1,5 @@
 ﻿using EducacaoOnline.PagamentoEFaturamento.Application.Commands;
-using EducacaoOnline.PagamentoEFaturamento.Application.Events;
 using EducacaoOnline.PagamentoEFaturamento.Domain;
-using MediatR;
 using Moq;
 using Moq.AutoMock;
 
@@ -11,10 +9,13 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
     {
         private readonly AutoMocker _mocker;
         private readonly PagamentoCommandHandler _pagamentoCommandHandler;
+        private Matricula? _matricula;
+        private DadosCartao? _dadosCartao;
+        private RealizarPagamentoCommand? _realizarPagamentoCommand;
 
         public PagamentoCommandHandlerTests() 
         {
-            _mocker = new AutoMocker();
+            _mocker = new();
             _pagamentoCommandHandler = _mocker.CreateInstance<PagamentoCommandHandler>();
         }
 
@@ -23,24 +24,27 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
         public async Task RealizarPagamento_MatriculaAguardandoPagamento_DeveAtivarMatriculaELancarEventoPagamentoRealizado()
         {
             // Arrange
-            var matricula = new Matricula(statusMatricula: StatusMatricula.AguardandoPagamento);
-            var dadosCartao = new DadosCartao(nomeTitular: "Nome Teste",
-                                              numeroCartao: "4024007164015884",
-                                              codigoSeguranca: "123",
-                                              dataValidade: DateTime.Now.AddYears(1));
-            var realizarPagamentoCommand = new RealizarPagamentoCommand(matricula: matricula,
-                                                                        dadosCartao: dadosCartao);
+            _matricula = new(StatusMatricula.AguardandoPagamento);
 
-            _mocker.GetMock<IPagamentoRepository>().Setup(r => r.UnitOfWork.Commit()).Returns(Task.FromResult(true));
+            _dadosCartao = new(
+                nomeTitular: "Nome Teste",
+                numeroCartao: "4024007164015884",
+                codigoSeguranca: "123",
+                dataValidade: DateTime.Now.AddYears(1));
+
+            _realizarPagamentoCommand = new(_matricula, _dadosCartao);
+
+            _mocker.GetMock<IPagamentoRepository>()
+                .Setup(r => r.UnitOfWork.Commit())
+                .Returns(Task.FromResult(true));
 
             // Act
-            var resultado = await _pagamentoCommandHandler.Handle(realizarPagamentoCommand, CancellationToken.None);
+            var resultado = await _pagamentoCommandHandler.Handle(_realizarPagamentoCommand, CancellationToken.None);
 
             // Assert
             Assert.True(resultado);
-            Assert.Equal(StatusMatricula.Ativa, matricula.Status);
+            Assert.Equal(StatusMatricula.Ativa, _matricula.Status);
             _mocker.GetMock<IPagamentoRepository>().Verify(r => r.Adicionar(It.IsAny<Pagamento>()), Times.Once);
-            //_mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<PagamentoRealizadoEvent>(), It.IsAny<CancellationToken>()), Times.Once);
             _mocker.GetMock<IPagamentoRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
         }
     }

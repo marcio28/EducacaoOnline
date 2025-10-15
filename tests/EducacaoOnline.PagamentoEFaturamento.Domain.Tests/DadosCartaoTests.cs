@@ -4,18 +4,21 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
 {
     public class DadosCartaoTests
     {
+        private DadosCartao? _dadosCartao;
+
         [Fact(DisplayName = "Dados de Cartão Novo Sem Erros É Válido")]
         [Trait("Categoria", "Pagamento e Faturamento - Dados de Cartão")]
         public void DadosCartaoNovo_SemErros_DeveSerValido()
         {
             // Arrange & Act
-            var dadosCartao = new DadosCartao(nomeTitular: "Nome Teste",
-                                              numeroCartao: "4024007164015884",
-                                              codigoSeguranca: "123",
-                                              dataValidade: DateTime.Now.AddYears(1));
+            _dadosCartao = new(
+                nomeTitular: "Nome Teste",
+                numeroCartao: "4024007164015884",
+                codigoSeguranca: "123",
+                dataValidade: DateTime.Now.AddYears(1));
 
             // Assert
-            Assert.True(dadosCartao.EhValido());
+            Assert.True(_dadosCartao.EhValido());
         }
 
         [Fact(DisplayName = "Dados de Cartão Novo Com Erros É Inválido")]
@@ -23,18 +26,19 @@ namespace EducacaoOnline.PagamentoEFaturamento.Domain.Tests
         public void DadosCartaoNovo_ComErros_DeveSerInvalido()
         {
             // Arrange & Act
-            var dadosCartao = new DadosCartao(nomeTitular: "",
-                                              numeroCartao: "",
-                                              codigoSeguranca: "",
-                                              dataValidade: DateTime.Now.AddDays(-1));
+            _dadosCartao = new(
+                nomeTitular: "",
+                numeroCartao: "",
+                codigoSeguranca: "",
+                dataValidade: DateTime.Now.AddDays(-1));
 
             // Assert
-            Assert.False(dadosCartao.EhValido());
-            Assert.Equal(4, dadosCartao.QuantidadeErros);
-            Assert.Contains(DadosCartaoValidator.TamanhoNomeErroMsg, dadosCartao.Erros.Select(c => c.ErrorMessage));
-            Assert.Contains(DadosCartaoValidator.NumeroCartaoErroMsg, dadosCartao.Erros.Select(c => c.ErrorMessage));
-            Assert.Contains(DadosCartaoValidator.CodigoSegurancaErroMsg, dadosCartao.Erros.Select(c => c.ErrorMessage));
-            Assert.Contains(DadosCartaoValidator.DataValidadeErroMsg, dadosCartao.Erros.Select(c => c.ErrorMessage));
+            Assert.False(_dadosCartao.EhValido());
+            Assert.Equal(4, _dadosCartao.QuantidadeErros);
+            Assert.Contains(DadosCartaoValidator.TamanhoNomeErroMsg, _dadosCartao.Erros.Select(c => c.ErrorMessage));
+            Assert.Contains(DadosCartaoValidator.NumeroCartaoErroMsg, _dadosCartao.Erros.Select(c => c.ErrorMessage));
+            Assert.Contains(DadosCartaoValidator.CodigoSegurancaErroMsg, _dadosCartao.Erros.Select(c => c.ErrorMessage));
+            Assert.Contains(DadosCartaoValidator.DataValidadeErroMsg, _dadosCartao.Erros.Select(c => c.ErrorMessage));
         }
     }
 }

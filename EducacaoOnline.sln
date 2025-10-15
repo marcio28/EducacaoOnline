@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFaturamento.Application", "src\EducacaoOnline.PagamentoEFaturamento.Application\EducacaoOnline.PagamentoEFaturamento.Application.csproj", "{5958CC19-D04F-4E6A-9E5B-66DC5B9A446E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoEFaturamento.Data", "src\EducacaoOnline.PagamentoEFaturamento.Data\EducacaoOnline.PagamentoEFaturamento.Data.csproj", "{403A1523-9DCA-4FC0-B5D3-C241EBD8004A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{5958CC19-D04F-4E6A-9E5B-66DC5B9A446E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5958CC19-D04F-4E6A-9E5B-66DC5B9A446E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5958CC19-D04F-4E6A-9E5B-66DC5B9A446E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403A1523-9DCA-4FC0-B5D3-C241EBD8004A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403A1523-9DCA-4FC0-B5D3-C241EBD8004A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403A1523-9DCA-4FC0-B5D3-C241EBD8004A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403A1523-9DCA-4FC0-B5D3-C241EBD8004A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
