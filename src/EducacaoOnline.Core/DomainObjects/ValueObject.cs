@@ -10,7 +10,7 @@ namespace EducacaoOnline.Core.DomainObjects
 
         public virtual bool EhValido()
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }
