@@ -5,7 +5,7 @@
 Bem-vindo ao repositório do projeto **Plataforma de Educação Online**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Arquitetura, Modelagem e Qualidade de Software**.
 O objetivo é desenvolver uma plataforma educacional com múltiplos contextos delimitados, aplicando DDD, TDD, CQRS e padrões arquiteturais para gestão eficiente de conteúdos educacionais, alunos e processos financeiros.
 
-### **Autor(es)**
+### **Autor**
 - **Márcio Gomes**
 
 ## **2. Proposta do Projeto**
