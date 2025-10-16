@@ -3,7 +3,7 @@ using EducacaoOnline.PagamentoEFaturamento.Domain;
 using Moq;
 using Moq.AutoMock;
 
-namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
+namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
 {
     public class PagamentoCommandHandlerTests
     {

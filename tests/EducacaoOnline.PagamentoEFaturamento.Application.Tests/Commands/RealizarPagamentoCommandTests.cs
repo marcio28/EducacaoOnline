@@ -2,7 +2,7 @@ using EducacaoOnline.PagamentoEFaturamento.Application.Commands;
 using EducacaoOnline.PagamentoEFaturamento.Application.Validators;
 using EducacaoOnline.PagamentoEFaturamento.Domain;
 
-namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests
+namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
 {
     public class RealizarPagamentoCommandTests
     {
