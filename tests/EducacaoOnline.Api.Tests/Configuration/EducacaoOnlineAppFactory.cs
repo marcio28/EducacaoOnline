@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 
-namespace EducacaoOnline.Api.Tests.Config
+namespace EducacaoOnline.Api.Tests.Configuration
 {
     public class EducacaoOnlineAppFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
     {

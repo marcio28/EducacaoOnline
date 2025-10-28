@@ -14,5 +14,12 @@ namespace EducacaoOnline.Api.Models
 
         [Compare("Password", ErrorMessage = "As senhas não coincidem.")]
         public string ConfirmPassword { get; set; }
+
+        public RegisterUserViewModel(string email, string password, string confirmPassword)
+        {
+            Email = email;
+            Password = password;
+            ConfirmPassword = confirmPassword;
+        }
     }
 }

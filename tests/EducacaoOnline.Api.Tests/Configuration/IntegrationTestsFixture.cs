@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 
-namespace EducacaoOnline.Api.Tests.Config
+namespace EducacaoOnline.Api.Tests.Configuration
 {
     [CollectionDefinition(nameof(IntegrationWebTestsFixtureCollection))]
     public class IntegrationWebTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture<Program>> { }

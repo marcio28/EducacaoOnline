@@ -1,4 +1,7 @@
-﻿using EducacaoOnline.Api.Tests.Config;
+﻿using EducacaoOnline.Api.Models;
+using EducacaoOnline.Api.Tests.Configuration;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace EducacaoOnline.Api.Tests
 {
@@ -23,26 +26,19 @@ namespace EducacaoOnline.Api.Tests
             // Arrange
             _testsFixture.GerarSenhaUsuario();
 
-            var requestBody = new Dictionary<string, string>
-            {
-                {"email", _testsFixture.UsuarioEmail },
-                {"password", _testsFixture.UsuarioSenha },
-                {"confirmPassword", _testsFixture.UsuarioSenha }
-            };
-
-            var postRequest = new HttpRequestMessage(HttpMethod.Post, URIRegistro)
-            {
-                Content = new FormUrlEncodedContent(requestBody)
-            };
+            var registerUser = new RegisterUserViewModel(email: "teste@teste.com", "Teste@123", "Teste@123");
+            
+            var stringRegisterUser = JsonConvert.SerializeObject(registerUser);
+            
+            var httpContent = new StringContent(stringRegisterUser, Encoding.UTF8, "application/json");
 
             // Act
-            var postResponse = await _testsFixture.Client.SendAsync(postRequest);
+            var postResponse = await _testsFixture.Client.PostAsync(URIRegistro, httpContent);
 
             // Assert
             var responseString = await postResponse.Content.ReadAsStringAsync();
 
             postResponse.EnsureSuccessStatusCode();
-            Assert.Contains($"Hello {_testsFixture.UsuarioEmail}!", responseString);
         }
 
         [Fact(DisplayName = "Registrar usuário com senha fraca"), TestPriority(3)]

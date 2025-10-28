@@ -37,6 +37,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+DbMigrationHelpers.EnsureSeedData(app).Wait();
+
 app.Run();
 
 public partial class Program { }
