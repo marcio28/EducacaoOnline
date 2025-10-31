@@ -46,11 +46,9 @@ namespace EducacaoOnline.Api.Tests.Configuration
 
         public async Task FazerLoginApi()
         {
-            var dadosUsuario = new LoginUsuarioViewModel
-            {
-                Email = "teste@teste.com",
-                Senha = "Teste@123"
-            };
+            var dadosUsuario = new LoginUsuarioViewModel(
+                email: "teste@teste.com",
+                password: "Teste@123");
 
             // Recriando o client para evitar configurações de Web
             Client = Factory.CreateClient();

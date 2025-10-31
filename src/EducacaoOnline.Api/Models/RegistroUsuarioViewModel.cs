@@ -2,7 +2,7 @@
 
 namespace EducacaoOnline.Api.Models
 {
-    public class RegisterUserViewModel
+    public class RegistroUsuarioViewModel
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [EmailAddress(ErrorMessage = "O campo {0} deve ser um endereço de e-mail válido.")]
@@ -15,7 +15,7 @@ namespace EducacaoOnline.Api.Models
         [Compare("Password", ErrorMessage = "As senhas não coincidem.")]
         public string ConfirmPassword { get; set; }
 
-        public RegisterUserViewModel(string email, string password, string confirmPassword)
+        public RegistroUsuarioViewModel(string email, string password, string confirmPassword)
         {
             Email = email;
             Password = password;

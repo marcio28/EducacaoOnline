@@ -24,20 +24,19 @@ namespace EducacaoOnline.Api.Tests
         public async Task Usuario_RealizarCadastro_DeveExecutarComSucesso()
         {
             // Arrange
-            _testsFixture.GerarSenhaUsuario();
-
-            var registerUser = new RegisterUserViewModel(email: "teste@teste.com", "Teste@123", "Teste@123");
+            var registroUsuario = new RegistroUsuarioViewModel(
+                email: "sucesso@teste.com", 
+                password: "Teste@123", 
+                confirmPassword: "Teste@123");
             
-            var stringRegisterUser = JsonConvert.SerializeObject(registerUser);
-            
-            var httpContent = new StringContent(stringRegisterUser, Encoding.UTF8, "application/json");
+            var stringRegistroUsuario = JsonConvert.SerializeObject(registroUsuario);
+            var httpContent = new StringContent(stringRegistroUsuario, Encoding.UTF8, "application/json");
 
             // Act
             var postResponse = await _testsFixture.Client.PostAsync(URIRegistro, httpContent);
+            await postResponse.Content.ReadAsStringAsync();
 
             // Assert
-            var responseString = await postResponse.Content.ReadAsStringAsync();
-
             postResponse.EnsureSuccessStatusCode();
         }
 
@@ -46,37 +45,22 @@ namespace EducacaoOnline.Api.Tests
         public async Task Usuario_RealizarCadastroComSenhaFraca_DeveRetornarMensagemDeErro()
         {
             // Arrange
-            var initialResponse = await _testsFixture.Client.GetAsync(URIRegistro);
-            initialResponse.EnsureSuccessStatusCode();
+            var registroUsuario = new RegistroUsuarioViewModel(
+                email: "insucesso@teste.com",
+                password: "123", 
+                confirmPassword: "123");
 
-            var antiForgeryToken = _testsFixture.ObterAntiForgeryToken(await initialResponse.Content.ReadAsStringAsync());
-
-            _testsFixture.GerarSenhaUsuario();
-            const string senhaFraca = "123456";
-
-            var formData = new Dictionary<string, string>
-            {
-                { _testsFixture.AntiForgeryFieldName, antiForgeryToken },
-                {"Input.Email", _testsFixture.UsuarioEmail },
-                {"Input.Password", senhaFraca },
-                {"Input.ConfirmPassword", senhaFraca }
-            };
-
-            var postRequest = new HttpRequestMessage(HttpMethod.Post, URIRegistro)
-            {
-                Content = new FormUrlEncodedContent(formData)
-            };
+            var stringRegistroUsuario = JsonConvert.SerializeObject(registroUsuario);
+            var httpContent = new StringContent(stringRegistroUsuario, Encoding.UTF8, "application/json");
 
             // Act
-            var postResponse = await _testsFixture.Client.SendAsync(postRequest);
+            var postResponse = await _testsFixture.Client.PostAsync(URIRegistro, httpContent);
 
             // Assert
+            await postResponse.Content.ReadAsStringAsync();
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, postResponse.StatusCode);
             var responseString = await postResponse.Content.ReadAsStringAsync();
-
-            postResponse.EnsureSuccessStatusCode();
-            Assert.Contains("Passwords must have at least one non alphanumeric character.", responseString);
-            Assert.Contains("Passwords must have at least one lowercase (&#x27;a&#x27;-&#x27;z&#x27;).", responseString);
-            Assert.Contains("Passwords must have at least one uppercase (&#x27;A&#x27;-&#x27;Z&#x27;).", responseString);
+            Assert.Contains("O campo Password deve ter entre 6 e 100 caracteres.", responseString);
         }
 
         [Fact(DisplayName = "Fazer login com sucesso"), TestPriority(2)]
@@ -84,31 +68,19 @@ namespace EducacaoOnline.Api.Tests
         public async Task Usuario_RealizarLogin_DeveExecutarComSucesso()
         {
             // Arrange
-            var initialResponse = await _testsFixture.Client.GetAsync(URILogin);
-            initialResponse.EnsureSuccessStatusCode();
+            var loginUsuario = new LoginUsuarioViewModel(
+                email: "sucesso@teste.com",
+                password: "Teste@123");
 
-            var antiForgeryToken = _testsFixture.ObterAntiForgeryToken(await initialResponse.Content.ReadAsStringAsync());
-
-            var formData = new Dictionary<string, string>
-            {
-                {_testsFixture.AntiForgeryFieldName, antiForgeryToken},
-                {"Input.Email", _testsFixture.UsuarioEmail},
-                {"Input.Password", _testsFixture.UsuarioSenha}
-            };
-
-            var postRequest = new HttpRequestMessage(HttpMethod.Post, URILogin)
-            {
-                Content = new FormUrlEncodedContent(formData)
-            };
+            var stringLoginUsuario = JsonConvert.SerializeObject(loginUsuario);
+            var httpContent = new StringContent(stringLoginUsuario, Encoding.UTF8, "application/json");
 
             // Act
-            var postResponse = await _testsFixture.Client.SendAsync(postRequest);
+            var postResponse = await _testsFixture.Client.PostAsync(URILogin, httpContent);
+            await postResponse.Content.ReadAsStringAsync();
 
             // Assert
-            var responseString = await postResponse.Content.ReadAsStringAsync();
-
             postResponse.EnsureSuccessStatusCode();
-            Assert.Contains($"Hello {_testsFixture.UsuarioEmail}!", responseString);
         }
     }
 }

@@ -30,23 +30,23 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
+        public async Task<ActionResult> Registrar(RegistroUsuarioViewModel registroUsuario)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var user = new IdentityUser
+            var usuario = new IdentityUser
             {
-                UserName = registerUser.Email,
-                Email = registerUser.Email,
+                UserName = registroUsuario.Email,
+                Email = registroUsuario.Email,
                 EmailConfirmed = true
             };
 
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
+            var result = await _userManager.CreateAsync(usuario, registroUsuario.Password);
 
             if (!result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
-                return Ok(GerarJwt(user.Email));
+                await _signInManager.SignInAsync(usuario, false);
+                return Ok(GerarJwt(usuario.Email));
             }
 
             return Ok();
@@ -56,15 +56,15 @@ namespace EducacaoOnline.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Login(LoginUsuarioViewModel loginUser)
+        public async Task<ActionResult> Login(LoginUsuarioViewModel loginUsuario)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Senha, false, true);
+            var result = await _signInManager.PasswordSignInAsync(loginUsuario.Email, loginUsuario.Password, false, true);
 
             if (!result.Succeeded) return Problem("Usuário ou senha inválidos.");
 
-            return Ok(GerarJwt(loginUser.Email));
+            return Ok(GerarJwt(loginUsuario.Email));
         }
 
         private async Task<string> GerarJwt(string email)
