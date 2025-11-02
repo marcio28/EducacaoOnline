@@ -82,6 +82,9 @@ A estrutura do projeto é organizada da seguinte forma:
    - `dotnet run`
    - Acesse a documentação da API em: http://localhost:5001/swagger
 
+4. **Executar relatório de cobertura de teste:**
+    - dotnet test /p:CollectCoverage=true /p:ExcludeByFile=\"**\Migrations\**\" /p:CoverletOutput=..\coverage
+
 ## **7. Instruções de Configuração**
 
 - **JWT para API:** As chaves de configuração do JWT estão no `appsettings.json`
