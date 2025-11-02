@@ -3,14 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EducacaoOnline.Api.Configuration
 {
-    public static class DbMigrationHelperExtension
-    {
-        public static void UseDbMigrationHelper(this WebApplication app)
-        {
-            DbMigrationHelpers.EnsureSeedData(app).Wait();
-        }
-    }
-
     public static class DbMigrationHelpers
     {
         public static async Task EnsureSeedData(WebApplication serviceScope)
