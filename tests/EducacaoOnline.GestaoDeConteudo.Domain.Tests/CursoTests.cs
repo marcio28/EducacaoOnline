@@ -93,9 +93,9 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
         }
 
 
-        [Fact(DisplayName = "Adicionar Aula Inválida Não Adicionada")]
+        [Fact(DisplayName = "Adicionar Aula Inválida Não Adicionada e Lança Exceção")]
         [Trait("Categoria", "Gestão de Conteúdo - Curso")]
-        public void AdicionarAula_Invalida_NaoDeveSerAdicionada()
+        public void AdicionarAula_Invalida_DeveNaoSerAdicionadaELancarExcecao()
         {
             // Arrange
             _curso = new(
@@ -106,16 +106,10 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain.Tests
 
             var tituloAula = "I";
 
-            // Act
-            var aula = _curso.AdicionarAula(tituloAula, conteudo: "A");
-
-            // Assert
-            Assert.False(aula.EhValido());
+            // Act & Assert
+            var exception = Assert.Throws<AulaInvalidaException>(() => _curso.AdicionarAula(tituloAula, conteudo: "A"));
             Assert.Equal(quantidadeAulasAntes, _curso.QuantidadeAulas);
             Assert.DoesNotContain(_curso.Aulas ?? [], a => a.Titulo.Equals(tituloAula, StringComparison.OrdinalIgnoreCase));
-            Assert.Equal(2, aula.QuantidadeErros);
-            Assert.Contains(AulaValidator.TamanhoTituloErroMsg, aula.Erros.Select(c => c.ErrorMessage));
-            Assert.Contains(AulaValidator.TamanhoConteudoErroMsg, aula.Erros.Select(c => c.ErrorMessage));
         }
     }
 }
