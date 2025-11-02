@@ -6,8 +6,5 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Exceptions
     {
         public MatriculaCursoIndisponivelException() : base("Curso indisponível para matrícula.") { }
 
-        public MatriculaCursoIndisponivelException(string? message) : base(message) { }
-
-        public MatriculaCursoIndisponivelException(string? message, Exception? innerException) : base(message, innerException) { }
     }
 }
