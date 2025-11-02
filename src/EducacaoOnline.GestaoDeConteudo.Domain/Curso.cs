@@ -55,11 +55,10 @@ namespace EducacaoOnline.GestaoDeConteudo.Domain
                                 conteudo: conteudo,
                                 nomeArquivoMaterial: default);
 
-            if (aula.EhValido())
-            {
-                Aulas ??= [];
-                Aulas.Add(aula);
-            }
+            if (!aula.EhValido()) throw new AulaInvalidaException();
+
+            Aulas ??= [];
+            Aulas.Add(aula);
 
             return aula;
         }
