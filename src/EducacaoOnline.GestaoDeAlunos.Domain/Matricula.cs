@@ -8,7 +8,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain
         public Guid IdAluno { get; }
         public Guid IdCurso { get; }
         public StatusMatricula Status { get; private set; } = StatusMatricula.AguardandoPagamento;
-        public HistoricoAprendizado HistoricoAprendizado { get; private set; } = new();
+        public HistoricoAprendizado? HistoricoAprendizado { get; private set; }
         public Certificado? Certificado { get; private set; }
 
         public Matricula(Guid idAluno, Guid idCurso)
