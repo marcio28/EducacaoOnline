@@ -59,7 +59,12 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
 
         bool ProcessarPagamento(RealizarPagamentoCommand message)
         {
-            // TODO: Processar pagamento com gateway externo
+            // TODO: Código provisório. Implementar chamada de gateway externo.
+            if (message.DadosCartao.NomeTitular is "Teste Falha")
+            {
+                message.ErrosCartao.Add(new FluentValidation.Results.ValidationFailure("DadosCartao.NomeTitular", "Pagamento recusado pelo emissor do cartão."));
+                return false;
+            }
             return true;
         }
     }
