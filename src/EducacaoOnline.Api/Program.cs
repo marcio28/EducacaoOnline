@@ -1,6 +1,4 @@
 using EducacaoOnline.Api.Configuration;
-using EducacaoOnline.Api.Data;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,34 +8,22 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
     .AddEnvironmentVariables();
 
-// Add services to the container.
-var connectionString = builder.Configuration
-    .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("String de conexão 'DefaultConnection' não encontrada.");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
-
-builder.AddIdentityAndJwtConfig();
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services
+    .AddApiConfig()
+    .AddApiVersioningConfig()
+    .AddCorsConfig(builder.Configuration)
+    .AddSwaggerConfiguration()
+    .AddDbContextConfig(builder.Configuration)
+    .AddIdentityConfig()
+    .RegisterServices()
+    .AddJwtConfig(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwaggerConfiguration()
+   .UseApiConfiguration(app.Environment);
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-DbMigrationHelpers.EnsureSeedData(app).Wait();
+app.UseDbMigrationHelper();
 
 app.Run();
 

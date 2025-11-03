@@ -3,14 +3,14 @@ using EducacaoOnline.Api.Tests.Configuration;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace EducacaoOnline.Api.Tests
+namespace EducacaoOnline.Api.Tests.V1
 {
     [TestCaseOrderer("Features.Tests.PriorityOrderer", "Features.Tests")]
     [Collection(nameof(IntegrationWebTestsFixtureCollection))]
     public class ApiContaTests
     {
         private readonly IntegrationTestsFixture<Program> _testsFixture;
-        private const string URIConta = "/api/conta";
+        private const string URIConta = "/api/V1/conta";
         private const string URILogin = $"{URIConta}/login";
         private const string URIRegistro = $"{URIConta}/registrar";
 
