@@ -1,27 +1,24 @@
-﻿using EducacaoOnline.Api.Data;
-using EducacaoOnline.Api.Models;
+﻿using EducacaoOnline.Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace EducacaoOnline.Api.Configuration
 {
-    public static class IdentityAndJwtConfig
+    public static class JwtConfig
     {
-        public static WebApplicationBuilder AddIdentityAndJwtConfig(this WebApplicationBuilder builder)
+        public static IServiceCollection AddJwtConfig(this IServiceCollection services,
+                                                           IConfiguration configuration)
         {
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                            .AddRoles<IdentityRole>()
-                            .AddEntityFrameworkStores<ApplicationDbContext>();
+            var JwtSettingsSection = configuration.GetSection("JwtSettings");
 
-            var JwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
-            builder.Services.Configure<JwtSettings>(JwtSettingsSection);
+            services.Configure<JwtSettings>(JwtSettingsSection);
 
             var jwtSettings = JwtSettingsSection.Get<JwtSettings>();
-            var key = Encoding.ASCII.GetBytes(jwtSettings.Segredo);
 
-            builder.Services.AddAuthentication(options =>
+            var key = Encoding.ASCII.GetBytes(jwtSettings?.Segredo ?? string.Empty);
+
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,7 +35,8 @@ namespace EducacaoOnline.Api.Configuration
                     ValidIssuer = jwtSettings.Emissor
                 };
             });
-            return builder;
+
+            return services;
         }
     }
 }
