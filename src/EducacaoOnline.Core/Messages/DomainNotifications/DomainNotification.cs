@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace EducacaoOnline.Core.Messages.Notifications
+namespace EducacaoOnline.Core.Messages.DomainNotifications
 {
     public class DomainNotification : Message, INotification
     {

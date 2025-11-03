@@ -1,17 +1,21 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using EducacaoOnline.Api.Controllers;
 using EducacaoOnline.Api.Models;
+using EducacaoOnline.Core.Messages.ApplicationNotifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-namespace EducacaoOnline.Api.Controllers
+namespace EducacaoOnline.Api.V1.Controllers
 {
-    [ApiController]
-    [Route("api/conta")]
-    public class AuthController : ControllerBase
+    [AllowAnonymous]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/conta")]
+    public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -19,7 +23,8 @@ namespace EducacaoOnline.Api.Controllers
 
         public AuthController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<JwtSettings> jwtSettings)
+                              IOptions<JwtSettings> jwtSettings,
+                              INotifiable notifiable) : base(notifiable)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -70,11 +75,14 @@ namespace EducacaoOnline.Api.Controllers
         private async Task<string> GerarJwt(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null) return string.Empty;
+
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Sid, user.Id)
+                new(ClaimTypes.Sid, user.Id)
             };
 
             foreach (var role in roles)
@@ -83,7 +91,7 @@ namespace EducacaoOnline.Api.Controllers
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Segredo);
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Segredo ?? string.Empty);
 
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {

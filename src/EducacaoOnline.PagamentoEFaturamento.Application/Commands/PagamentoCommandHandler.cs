@@ -1,5 +1,5 @@
 ﻿using EducacaoOnline.Core.Messages;
-using EducacaoOnline.Core.Messages.Notifications;
+using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.PagamentoEFaturamento.Application.Events;
 using EducacaoOnline.PagamentoEFaturamento.Domain;
 using MediatR;

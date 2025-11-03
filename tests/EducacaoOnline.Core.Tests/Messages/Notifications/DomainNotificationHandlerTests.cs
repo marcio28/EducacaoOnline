@@ -1,4 +1,4 @@
-﻿using EducacaoOnline.Core.Messages.Notifications;
+﻿using EducacaoOnline.Core.Messages.DomainNotifications;
 
 namespace EducacaoOnline.Core.Tests.Messages.Notifications
 {

@@ -1,7 +1,5 @@
-﻿using EducacaoOnline.Core.Messages.Notifications;
-using EducacaoOnline.PagamentoEFaturamento.Application.Commands;
+﻿using EducacaoOnline.PagamentoEFaturamento.Application.Commands;
 using EducacaoOnline.PagamentoEFaturamento.Domain;
-using MediatR;
 using Moq;
 using Moq.AutoMock;
 
