@@ -15,13 +15,13 @@ namespace EducacaoOnline.Api.V1.Controllers
     [AllowAnonymous]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/autenticacao")]
-    public class AutorizacaoController : MainController
+    public class AutenticacaoController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public AutorizacaoController(SignInManager<IdentityUser> signInManager,
+        public AutenticacaoController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
                               IOptions<JwtSettings> jwtSettings,
                               INotifiable notifiable) : base(notifiable)

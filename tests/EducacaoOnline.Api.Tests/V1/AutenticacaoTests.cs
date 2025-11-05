@@ -10,9 +10,9 @@ namespace EducacaoOnline.Api.Tests.V1
     public class AutenticacaoTests
     {
         private readonly IntegrationTestsFixture<Program> _testsFixture;
-        private const string URIConta = "/api/V1/autenticacao";
-        private const string URILogin = $"{URIConta}/login";
-        private const string URIRegistro = $"{URIConta}/registrar";
+        private const string URIAutenticacao = "/api/V1/autenticacao";
+        private const string URILogin = $"{URIAutenticacao}/login";
+        private const string URIRegistro = $"{URIAutenticacao}/registrar";
 
         public AutenticacaoTests(IntegrationTestsFixture<Program> testsFixture)
         {
