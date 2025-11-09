@@ -10,9 +10,9 @@ namespace EducacaoOnline.Api.Extensions
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (context.HttpContext.User.Identity == null) throw new InvalidOperationException();
+            if (context.HttpContext.User.Identity is null) throw new InvalidOperationException();
 
-            if (!context.HttpContext.User.Identity.IsAuthenticated)
+            if (context.HttpContext.User.Identity.IsAuthenticated is false)
             {
                 context.Result = new UnauthorizedResult();
                 return;

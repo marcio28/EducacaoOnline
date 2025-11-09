@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace EducacaoOnline.Api.Data.Migrations
 {
     [ExcludeFromCodeCoverage]
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(IdentityContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -1,15 +1,24 @@
 ﻿using EducacaoOnline.Core.Messages;
 using FluentValidation.Results;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EducacaoOnline.Core.DomainObjects
 {
     public abstract class Entity
     {
         public Guid Id { get; }
+
+        [NotMapped]
         List<Event>? _notificacoes;
+
         public IReadOnlyCollection<Event> Notificacoes => (_notificacoes ?? []).AsReadOnly();
+
+        [NotMapped]
         public ValidationResult? ValidationResult { get; protected set; }
+
+        [NotMapped]
         public List<ValidationFailure> Erros => ValidationResult?.Errors ?? [];
+
         public int QuantidadeErros => Erros.Count;
 
         protected Entity()

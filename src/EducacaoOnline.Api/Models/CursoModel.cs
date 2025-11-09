@@ -1,4 +1,4 @@
-﻿using EducacaoOnline.GestaoDeConteudo.Domain.Validators;
+﻿using EducacaoOnline.GestaoConteudo.Domain.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace EducacaoOnline.Api.Models

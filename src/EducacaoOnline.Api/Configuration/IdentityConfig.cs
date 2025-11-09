@@ -9,7 +9,7 @@ namespace EducacaoOnline.Api.Configuration
         {
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<IdentityContext>();
 
             return services;
         }

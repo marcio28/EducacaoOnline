@@ -31,8 +31,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EducacaoOnline.Core\EducacaoOnline.Core.csproj" />
-    <ProjectReference Include="..\EducacaoOnline.GestaoDeConteudo.Data\EducacaoOnline.GestaoDeConteudo.Data.csproj" />
-    <ProjectReference Include="..\EducacaoOnline.GestaoDeConteudo.Domain\EducacaoOnline.GestaoDeConteudo.Domain.csproj" />
+    <ProjectReference Include="..\EducacaoOnline.GestaoConteudo.Data\EducacaoOnline.GestaoConteudo.Data.csproj" />
+    <ProjectReference Include="..\EducacaoOnline.GestaoConteudo.Domain\EducacaoOnline.GestaoConteudo.Domain.csproj" />
   </ItemGroup>
 
 </Project>

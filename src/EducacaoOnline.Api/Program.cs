@@ -4,8 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", true, true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
 builder.Services
@@ -16,7 +16,8 @@ builder.Services
     .AddDbContextConfig(builder.Configuration)
     .AddIdentityConfig()
     .RegisterServices()
-    .AddJwtConfig(builder.Configuration);
+    .AddJwtConfig(builder.Configuration)
+    .AddAutoMapper();
 
 var app = builder.Build();
 

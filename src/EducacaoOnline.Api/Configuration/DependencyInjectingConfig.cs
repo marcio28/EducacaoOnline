@@ -1,7 +1,7 @@
 ﻿using EducacaoOnline.Core.Messages.ApplicationNotifications;
-using EducacaoOnline.GestaoDeConteudo.Data.Repositories;
-using EducacaoOnline.GestaoDeConteudo.Domain.Repositories;
-using EducacaoOnline.GestaoDeConteudo.Domain.Services;
+using EducacaoOnline.GestaoConteudo.Data.Repositories;
+using EducacaoOnline.GestaoConteudo.Domain.Repositories;
+using EducacaoOnline.GestaoConteudo.Domain.Services;
 
 namespace EducacaoOnline.Api.Configuration
 {

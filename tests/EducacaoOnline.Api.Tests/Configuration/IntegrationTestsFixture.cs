@@ -1,21 +1,14 @@
 ﻿using Bogus;
 using EducacaoOnline.Api.Models;
-using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
-using System.Text.RegularExpressions;
 
 namespace EducacaoOnline.Api.Tests.Configuration
 {
-    [CollectionDefinition(nameof(IntegrationWebTestsFixtureCollection))]
-    public class IntegrationWebTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture<Program>> { }
-
     [CollectionDefinition(nameof(IntegrationApiTestsFixtureCollection))]
     public class IntegrationApiTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture<Program>> { }
 
     public class IntegrationTestsFixture<TProgram> : IDisposable where TProgram : class
     {
-        public string AntiForgeryFieldName = "__RequestVerificationToken";
-
         public readonly EducacaoOnlineAppFactory<TProgram> Factory;
         public HttpClient Client;
 
@@ -25,16 +18,8 @@ namespace EducacaoOnline.Api.Tests.Configuration
 
         public IntegrationTestsFixture()
         {
-            var clientOptions = new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = true,
-                BaseAddress = new Uri("http://localhost"),
-                HandleCookies = true,
-                MaxAutomaticRedirections = 7
-            };
-
             Factory = new EducacaoOnlineAppFactory<TProgram>();
-            Client = Factory.CreateClient(clientOptions);
+            Client = Factory.CreateClient();
         }
 
         public void GerarSenhaUsuario()
@@ -44,31 +29,26 @@ namespace EducacaoOnline.Api.Tests.Configuration
             UsuarioSenha = faker.Internet.Password(8, false, "", "@1Ab_");
         }
 
-        public async Task FazerLoginApi()
+        public async Task FazerLoginAdministrador()
+        {
+            var dadosUsuario = new LoginUsuarioViewModel(
+                email: "admin@teste.com",
+                password: "Teste@123");
+
+            var response = await Client.PostAsJsonAsync("api/v1/autenticacao/login", dadosUsuario);
+            response.EnsureSuccessStatusCode();
+            UsuarioToken = await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task FazerLoginAluno()
         {
             var dadosUsuario = new LoginUsuarioViewModel(
                 email: "teste@teste.com",
                 password: "Teste@123");
 
-            // Recriando o client para evitar configurações de Web
-            Client = Factory.CreateClient();
-
-            var response = await Client.PostAsJsonAsync("api/login", dadosUsuario);
+            var response = await Client.PostAsJsonAsync("api/v1/autenticacao/login", dadosUsuario);
             response.EnsureSuccessStatusCode();
             UsuarioToken = await response.Content.ReadAsStringAsync();
-        }
-
-        public string ObterAntiForgeryToken(string htmlBody)
-        {
-            var requestVerificationTokenMatch =
-                Regex.Match(htmlBody, $@"\<input name=""{AntiForgeryFieldName}"" type=""hidden"" value=""([^""]+)"" \/\>");
-
-            if (requestVerificationTokenMatch.Success)
-            {
-                return requestVerificationTokenMatch.Groups[1].Captures[0].Value;
-            }
-
-            throw new ArgumentException($"Anti forgery token '{AntiForgeryFieldName}' não encontrado no HTML", nameof(htmlBody));
         }
 
         public void Dispose()
