@@ -1,5 +1,6 @@
-﻿using EducacaoOnline.Api.Models;
-using EducacaoOnline.Api.Tests.Configuration;
+﻿using EducacaoOnline.Api.Tests.Configuration;
+using EducacaoOnline.Api.Tests.Extensions;
+using EducacaoOnline.GestaoConteudo.Application.Models;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Json;
 
@@ -23,10 +24,11 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
         {
             // Arrange
             await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
 
             var cursoModel = new CursoModel
             {
-                Nome = "Curso de Teste",
+                Nome = "Curso de Teste",  // TODO: gerar nome único
                 Descricao = "Descrição do Curso de Teste",
             };
 

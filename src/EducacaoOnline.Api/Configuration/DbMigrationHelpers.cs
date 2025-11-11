@@ -55,8 +55,7 @@ namespace EducacaoOnline.Api.Configuration
 
             var claimsAdmin = new List<IdentityUserClaim<string>>
             { 
-                new IdentityUserClaim<string> 
-                {
+                new() {
                     UserId = idAdminUser.ToString(),
                     ClaimType = "Cursos",
                     ClaimValue = "VISUALIZAR,INCLUIR,ALTERAR,EXCLUIR"

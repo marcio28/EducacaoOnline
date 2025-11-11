@@ -1,8 +1,6 @@
 ﻿using EducacaoOnline.Api.Models;
 using EducacaoOnline.Api.Tests.Configuration;
-using Newtonsoft.Json;
 using System.Net.Http.Json;
-using System.Text;
 
 namespace EducacaoOnline.Api.Tests.V1.Autenticacao
 {
