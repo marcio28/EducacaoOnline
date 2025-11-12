@@ -2,7 +2,7 @@
 
 namespace EducacaoOnline.Api.Models;
 
-public class LoginUsuarioViewModel
+public class LoginUsuarioModel
 {
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     [EmailAddress(ErrorMessage = "O campo {0} deve ser um endereço de e-mail válido.")]
@@ -12,7 +12,7 @@ public class LoginUsuarioViewModel
     [StringLength(100, ErrorMessage = "O campo {0} deve ter entre {2} e {1} caracteres.", MinimumLength = 6)]
     public string Password { get; set; }
 
-    public LoginUsuarioViewModel(string email, string password)
+    public LoginUsuarioModel(string email, string password)
     {
         Email = email;
         Password = password;

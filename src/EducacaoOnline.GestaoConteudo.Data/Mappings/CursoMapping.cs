@@ -1,5 +1,4 @@
-﻿
-using EducacaoOnline.GestaoConteudo.Domain;
+﻿using EducacaoOnline.GestaoConteudo.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,20 +1,23 @@
-﻿
-using EducacaoOnline.Core.DomainObjects;
-using EducacaoOnline.GestaoDeAlunos.Domain.Exceptions;
+﻿using EducacaoOnline.Core.DomainObjects;
+using EducacaoOnline.GestaoAlunos.Domain.Exceptions;
 using System.Collections.ObjectModel;
 
-namespace EducacaoOnline.GestaoDeAlunos.Domain
+namespace EducacaoOnline.GestaoAlunos.Domain
 {
-    public class Aluno : Entity
+    public class Aluno : Entity, IAggregateRoot
     {
         public Collection<Matricula> Matriculas { get; private set; } = [];
         public int QuantidadeMatriculas => Matriculas.Count;
+
+        public Aluno() { }
+
+        public Aluno(Guid id) : base(id) { }
 
         public Matricula IniciarMatricula(Curso curso)
         {
             if (curso.DisponivelMatricula is false) throw new MatriculaCursoIndisponivelException();
 
-            var matricula = new Matricula(idAluno: this.Id,
+            var matricula = new Matricula(idAluno: Id,
                                           idCurso: curso.Id);
 
             Matriculas.Add(matricula);

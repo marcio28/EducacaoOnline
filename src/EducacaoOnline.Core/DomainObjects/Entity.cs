@@ -25,6 +25,10 @@ namespace EducacaoOnline.Core.DomainObjects
         {
             Id = Guid.NewGuid();
         }
+        protected Entity(Guid id)
+        {
+            Id = id;
+        }
 
         public void AdicionarEvento(Event evento)
         {

@@ -1,7 +1,6 @@
-﻿
-using EducacaoOnline.Core.DomainObjects;
+﻿using EducacaoOnline.Core.DomainObjects;
 
-namespace EducacaoOnline.GestaoDeAlunos.Domain
+namespace EducacaoOnline.GestaoAlunos.Domain
 {
     public class Matricula : Entity
     {
@@ -10,6 +9,8 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain
         public StatusMatricula Status { get; private set; } = StatusMatricula.AguardandoPagamento;
         public HistoricoAprendizado? HistoricoAprendizado { get; private set; }
         public Certificado? Certificado { get; private set; }
+
+        public Matricula() { }
 
         public Matricula(Guid idAluno, Guid idCurso)
         {

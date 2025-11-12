@@ -31,8 +31,8 @@ namespace EducacaoOnline.Api.Configuration
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = jwtSettings.Audiencia,
-                    ValidIssuer = jwtSettings.Emissor
+                    ValidAudience = jwtSettings?.Audiencia ?? string.Empty,
+                    ValidIssuer = jwtSettings?.Emissor ?? string.Empty,
                 };
             });
 

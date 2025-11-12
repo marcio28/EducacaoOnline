@@ -19,7 +19,7 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
         }
 
         [Fact(DisplayName = "Incluir curso, válido, grava curso")]
-        [Trait("Categoria", "Integração API - Gestão Conteúdo - Cursos")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
         public async Task IncluirCurso_Valido_DeveGravarCurso()
         {
             // Arrange
@@ -28,7 +28,7 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
 
             var cursoModel = new CursoModel
             {
-                Nome = "Curso de Teste",  // TODO: gerar nome único
+                Nome = $"Curso de Teste {Guid.NewGuid()}",
                 Descricao = "Descrição do Curso de Teste",
             };
 

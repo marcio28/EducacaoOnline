@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Net;
+using System.Security.Claims;
 
 namespace EducacaoOnline.Api.Controllers
 {
@@ -9,10 +10,23 @@ namespace EducacaoOnline.Api.Controllers
     public class MainController : Controller
     {
         private readonly INotifiable _notifiable;
+        protected Guid UsuarioId = Guid.Empty;
 
-        protected MainController(INotifiable notifiable)
+        protected MainController(IHttpContextAccessor httpContextAccessor,
+                                 INotifiable notifiable)
         {
             _notifiable = notifiable;
+
+            var usuario = httpContextAccessor.HttpContext?.User;
+
+            if (usuario is null) return;
+
+            if (usuario.Identity?.IsAuthenticated is false) return;
+
+            var declaracao = usuario.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (declaracao is not null)
+                UsuarioId = Guid.Parse(declaracao.Value);
         }
 
         protected ActionResult RespostaCustomizada(HttpStatusCode statusCode = HttpStatusCode.OK, object? result = null)
@@ -40,18 +54,20 @@ namespace EducacaoOnline.Api.Controllers
             var erros = modelState.Values.SelectMany(e => e.Errors);
             foreach (var erro in erros)
             {
-                var errorMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
-                AdicionarErroProcessamento(errorMsg);
+                var mensagemErro = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
+                AdicionarErroProcessamento(mensagemErro);
             }
+
             return RespostaCustomizada();
         }
 
-        protected ActionResult RespostaCustomizada(List<ApplicationNotification> notifications)
+        protected ActionResult RespostaCustomizada(List<ApplicationNotification> notificacoes)
         {
-            foreach (var notitication in notifications)
+            foreach (var notiticacao in notificacoes)
             {
-                AdicionarErroProcessamento(notitication.Message);
+                AdicionarErroProcessamento(notiticacao.Message);
             }
+
             return RespostaCustomizada();
         }
 

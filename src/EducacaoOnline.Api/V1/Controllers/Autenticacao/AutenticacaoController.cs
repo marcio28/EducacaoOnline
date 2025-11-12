@@ -1,6 +1,8 @@
 ﻿using EducacaoOnline.Api.Controllers;
 using EducacaoOnline.Api.Models;
 using EducacaoOnline.Core.Messages.ApplicationNotifications;
+using EducacaoOnline.GestaoAlunos.Domain;
+using EducacaoOnline.GestaoAlunos.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,26 +20,30 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
     [Route("api/v{version:apiVersion}/autenticacao")]
     public class AutenticacaoController : MainController
     {
+        private readonly IAlunoRepository _alunoRepository;
+        private readonly JwtSettings _jwtSettings;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly JwtSettings _jwtSettings;
 
         public AutenticacaoController(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            IAlunoRepository alunoRepository,
+            IHttpContextAccessor httpContextAccessor,
             IOptions<JwtSettings> jwtSettings,
-            INotifiable notifiable) : base(notifiable)
+            INotifiable notifiable,
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager) : base(httpContextAccessor, notifiable)
         {
+            _alunoRepository = alunoRepository;
+            _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
             _userManager = userManager;
-            _jwtSettings = jwtSettings.Value;
         }
 
         [HttpPost("registrar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Registrar(RegistroUsuarioViewModel registroUsuario)
+        public async Task<ActionResult> Registrar(RegistroUsuarioModel registroUsuario)
         {
             if (ModelState.IsValid is false) return RespostaCustomizada(ModelState);
 
@@ -49,9 +55,9 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
             };
 
             var result = await _userManager.CreateAsync(usuario, registroUsuario.Password);
-
-            if (result.Succeeded is false)
+            if (result.Succeeded)
             {
+                IncluirAluno(usuario, CancellationToken.None);
                 await _signInManager.SignInAsync(usuario, false);
                 return Ok(GerarJwt(usuario.Email));
             }
@@ -59,11 +65,18 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
             return Ok();
         }
 
+        private async void IncluirAluno(IdentityUser usuario, CancellationToken tokenCancelamento)
+        {
+            var aluno = new Aluno(Guid.Parse(usuario.Id));
+            await _alunoRepository.Incluir(aluno, tokenCancelamento);
+            await _alunoRepository.UnitOfWork.Commit();
+        }
+
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Login(LoginUsuarioViewModel loginUsuario)
+        public async Task<ActionResult> Login(LoginUsuarioModel loginUsuario)
         {
             if (ModelState.IsValid is false) return RespostaCustomizada(ModelState);
 

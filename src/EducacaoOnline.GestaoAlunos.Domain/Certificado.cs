@@ -1,8 +1,7 @@
-﻿
-using EducacaoOnline.Core.DomainObjects;
-using EducacaoOnline.GestaoDeAlunos.Domain.Validators;
+﻿using EducacaoOnline.Core.DomainObjects;
+using EducacaoOnline.GestaoAlunos.Domain.Validators;
 
-namespace EducacaoOnline.GestaoDeAlunos.Domain
+namespace EducacaoOnline.GestaoAlunos.Domain
 {
     public class Certificado : Entity
     {

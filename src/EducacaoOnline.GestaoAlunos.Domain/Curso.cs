@@ -1,7 +1,6 @@
-﻿
-using EducacaoOnline.Core.DomainObjects;
+﻿using EducacaoOnline.Core.DomainObjects;
 
-namespace EducacaoOnline.GestaoDeAlunos.Domain
+namespace EducacaoOnline.GestaoAlunos.Domain
 {
     public class Curso : Entity
     {

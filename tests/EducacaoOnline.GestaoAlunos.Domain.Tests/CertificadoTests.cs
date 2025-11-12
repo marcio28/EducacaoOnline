@@ -1,7 +1,6 @@
-﻿
-using EducacaoOnline.GestaoDeAlunos.Domain.Validators;
+﻿using EducacaoOnline.GestaoAlunos.Domain.Validators;
 
-namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
+namespace EducacaoOnline.GestaoAlunos.Domain.Tests
 {
     public class CertificadoTests
     {

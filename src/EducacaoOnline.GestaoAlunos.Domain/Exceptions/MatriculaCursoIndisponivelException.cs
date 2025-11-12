@@ -1,6 +1,6 @@
 ﻿using EducacaoOnline.Core.DomainObjects;
 
-namespace EducacaoOnline.GestaoDeAlunos.Domain.Exceptions
+namespace EducacaoOnline.GestaoAlunos.Domain.Exceptions
 {
     public class MatriculaCursoIndisponivelException : DomainException
     {

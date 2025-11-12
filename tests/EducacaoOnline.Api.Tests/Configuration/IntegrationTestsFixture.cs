@@ -31,7 +31,7 @@ namespace EducacaoOnline.Api.Tests.Configuration
 
         public async Task FazerLoginAdministrador()
         {
-            var dadosUsuario = new LoginUsuarioViewModel(
+            var dadosUsuario = new LoginUsuarioModel(
                 email: "admin@teste.com",
                 password: "Teste@123");
 
@@ -42,7 +42,7 @@ namespace EducacaoOnline.Api.Tests.Configuration
 
         public async Task FazerLoginAluno()
         {
-            var dadosUsuario = new LoginUsuarioViewModel(
+            var dadosUsuario = new LoginUsuarioModel(
                 email: "teste@teste.com",
                 password: "Teste@123");
 

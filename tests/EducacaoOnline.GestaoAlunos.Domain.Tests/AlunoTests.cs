@@ -1,6 +1,6 @@
-﻿using EducacaoOnline.GestaoDeAlunos.Domain.Exceptions;
+﻿using EducacaoOnline.GestaoAlunos.Domain.Exceptions;
 
-namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
+namespace EducacaoOnline.GestaoAlunos.Domain.Tests
 {
     public class AlunoTests
     {
@@ -9,7 +9,7 @@ namespace EducacaoOnline.GestaoDeAlunos.Domain.Tests
 
         public AlunoTests()
         {
-            _aluno = new();
+            _aluno = new(Guid.NewGuid());
         }
 
         [Fact(DisplayName = "Iniciar Matrícula Sem Erros Aguarda Pagamento")]

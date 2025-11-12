@@ -19,9 +19,10 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
         private readonly ICursoService _cursoService;
         private readonly IMapper _mapper;
 
-        public CursosController(ICursoService cursoService, 
-                                       INotifiable notifiable,
-                                       IMapper mapper) : base(notifiable)
+        public CursosController(ICursoService cursoService,
+                                IHttpContextAccessor httpContextAccessor,
+                                IMapper mapper,
+                                INotifiable notifiable) : base(httpContextAccessor, notifiable)
         {
             _cursoService = cursoService;
             _mapper = mapper;
