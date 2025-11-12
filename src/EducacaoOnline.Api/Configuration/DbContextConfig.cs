@@ -1,4 +1,5 @@
 ﻿using EducacaoOnline.Api.Data;
+using EducacaoOnline.GestaoAlunos.Data.Context;
 using EducacaoOnline.GestaoConteudo.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ namespace EducacaoOnline.Api.Configuration
                 .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("String de conexão 'DefaultConnection' não encontrada.");
 
             services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
+            services.AddDbContext<GestaoAlunosContext>(options => options.UseSqlite(connectionString));
             services.AddDbContext<GestaoConteudoContext>(options => options.UseSqlite(connectionString));
 
             return services;

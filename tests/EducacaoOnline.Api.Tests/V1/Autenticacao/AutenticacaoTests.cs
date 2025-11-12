@@ -9,13 +9,14 @@ namespace EducacaoOnline.Api.Tests.V1.Autenticacao
     public class AutenticacaoTests
     {
         private readonly IntegrationTestsFixture<Program> _testsFixture;
-        private const string URIAutenticacao = "/api/V1/autenticacao";
+        private const string URIAutenticacao = "/api/v1/autenticacao";
         private const string URILogin = $"{URIAutenticacao}/login";
         private const string URIRegistro = $"{URIAutenticacao}/registrar";
 
         public AutenticacaoTests(IntegrationTestsFixture<Program> testsFixture)
         {
             _testsFixture = testsFixture;
+            _testsFixture.GerarSenhaUsuario();
         }
 
         [Fact(DisplayName = "Registrar usuário, senha forte, retorna sucesso"), TestPriority(1)]
@@ -23,11 +24,11 @@ namespace EducacaoOnline.Api.Tests.V1.Autenticacao
         public async Task Registrar_UsuarioComSenhaForte_DeveRetornarSucesso()
         {
             // Arrange
-            var registroUsuario = new RegistroUsuarioViewModel(
-                email: "sucesso@teste.com", 
-                password: "Teste@123", 
-                confirmPassword: "Teste@123");
-            
+            var registroUsuario = new RegistroUsuarioModel(
+                email: _testsFixture.UsuarioEmail,
+                password: _testsFixture.UsuarioSenha,
+                confirmPassword: _testsFixture.UsuarioSenha);
+
             // Act
             var postResponse = await _testsFixture.Client.PostAsJsonAsync(URIRegistro, registroUsuario);
             await postResponse.Content.ReadAsStringAsync();
@@ -41,8 +42,9 @@ namespace EducacaoOnline.Api.Tests.V1.Autenticacao
         public async Task Registrar_UsuarioComSenhaFraca_DeveRetornarErro()
         {
             // Arrange
-            var registroUsuario = new RegistroUsuarioViewModel(
-                email: "insucesso@teste.com",
+            _testsFixture.GerarSenhaUsuario();
+            var registroUsuario = new RegistroUsuarioModel(
+                email: _testsFixture.UsuarioEmail,
                 password: "123", 
                 confirmPassword: "123");
 
@@ -61,8 +63,8 @@ namespace EducacaoOnline.Api.Tests.V1.Autenticacao
         public async Task FazerLogin_DadosCorretos_DeveRetornarComSucesso()
         {
             // Arrange
-            var loginUsuario = new LoginUsuarioViewModel(
-                email: "sucesso@teste.com",
+            var loginUsuario = new LoginUsuarioModel(
+                email: "admin@teste.com",
                 password: "Teste@123");
 
             // Act

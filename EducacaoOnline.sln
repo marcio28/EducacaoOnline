@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.PagamentoFat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoConteudo.Application", "src\EducacaoOnline.GestaoConteudo.Application\EducacaoOnline.GestaoConteudo.Application.csproj", "{A7712C66-E998-48FC-AAD1-E8B7AF7C1EC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducacaoOnline.GestaoAlunos.Data", "src\EducacaoOnline.GestaoAlunos.Data\EducacaoOnline.GestaoAlunos.Data.csproj", "{50247964-B4E5-42CA-AE96-C9107A08EE4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +114,10 @@ Global
 		{A7712C66-E998-48FC-AAD1-E8B7AF7C1EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7712C66-E998-48FC-AAD1-E8B7AF7C1EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7712C66-E998-48FC-AAD1-E8B7AF7C1EC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50247964-B4E5-42CA-AE96-C9107A08EE4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50247964-B4E5-42CA-AE96-C9107A08EE4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50247964-B4E5-42CA-AE96-C9107A08EE4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50247964-B4E5-42CA-AE96-C9107A08EE4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{A0E31788-B3C7-71CB-6A43-DC1EA6C08A51} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{FB890BA8-5EEF-644F-4FD0-21D2C8DA7148} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A7712C66-E998-48FC-AAD1-E8B7AF7C1EC2} = {BCF5B4FF-E73F-497D-8945-82D4D8869CB3}
+		{50247964-B4E5-42CA-AE96-C9107A08EE4E} = {317EFB3D-856F-4ED8-BC99-02F0D58FDBEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9809179B-A465-4527-8219-7BE38D81F592}
