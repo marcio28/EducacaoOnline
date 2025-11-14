@@ -48,11 +48,6 @@ namespace EducacaoOnline.GestaoConteudo.Data.Repositories
             return await _context.Cursos.AnyAsync(c => c.Nome == nome, tokenDeCancelamento);
         }
 
-        public async Task<int> SalvarMudancas(CancellationToken tokenDeCancelamento)
-        {
-                return await _context.SaveChangesAsync(tokenDeCancelamento);
-        }
-
         public void Dispose()
         {
             _context.Dispose();

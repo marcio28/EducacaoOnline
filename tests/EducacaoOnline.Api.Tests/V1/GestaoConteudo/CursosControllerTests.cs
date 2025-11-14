@@ -39,5 +39,27 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
             // Assert
             Assert.Equal(StatusCodes.Status201Created, (int)postResponse.StatusCode);
         }
+
+        [Fact(DisplayName = "Incluir curso, inválido, returna insucesso")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
+        public async Task IncluirCurso_Invalido_DeveRetornarInsucesso()
+        {
+            // Arrange
+            await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
+
+            var cursoModel = new CursoModel
+            {
+                Nome = "",
+                Descricao = "",
+            };
+
+            // Act
+            var postResponse = await _testsFixture.Client.PostAsJsonAsync(URICursos, cursoModel);
+            await postResponse.Content.ReadAsStringAsync();
+
+            // Assert
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)postResponse.StatusCode);
+        }
     }
 }

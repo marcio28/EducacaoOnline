@@ -1,5 +1,6 @@
 ﻿using EducacaoOnline.Api.Models;
 using EducacaoOnline.Api.Tests.Configuration;
+using EducacaoOnline.Core.Tests;
 using System.Net.Http.Json;
 
 namespace EducacaoOnline.Api.Tests.V1.Autenticacao
