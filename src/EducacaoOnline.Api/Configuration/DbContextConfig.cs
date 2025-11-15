@@ -13,9 +13,32 @@ namespace EducacaoOnline.Api.Configuration
             var connectionString = configuration
                 .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("String de conexão 'DefaultConnection' não encontrada.");
 
-            services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
-            services.AddDbContext<GestaoAlunosContext>(options => options.UseSqlite(connectionString));
-            services.AddDbContext<GestaoConteudoContext>(options => options.UseSqlite(connectionString));
+            if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                services.AddDbContext<IdentityContext>(
+                    options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
+                        maxRetryCount: 2,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                        errorNumbersToAdd: null)));
+
+                services.AddDbContext<GestaoAlunosContext>(
+                    options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
+                        maxRetryCount: 2,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                        errorNumbersToAdd: null)));
+
+                services.AddDbContext<GestaoConteudoContext>(
+                    options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
+                        maxRetryCount: 2,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                        errorNumbersToAdd: null)));
+            }
+            else
+            {
+                services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
+                services.AddDbContext<GestaoAlunosContext>(options => options.UseSqlite(connectionString));
+                services.AddDbContext<GestaoConteudoContext>(options => options.UseSqlite(connectionString));
+            }
 
             return services;
         }
