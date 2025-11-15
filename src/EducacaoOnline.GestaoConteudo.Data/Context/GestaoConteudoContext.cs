@@ -7,6 +7,7 @@ namespace EducacaoOnline.GestaoConteudo.Data.Context
 {
     public class GestaoConteudoContext : DbContext, IUnitOfWork
     {
+        public DbSet<Administrador> Administradores { get; set; }
         public DbSet<Curso> Cursos { get; set; }
 
         public GestaoConteudoContext() { }
@@ -17,8 +18,8 @@ namespace EducacaoOnline.GestaoConteudo.Data.Context
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(GestaoConteudoContext).Assembly);
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientCascade;
+            foreach (var tipoEntidade in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetForeignKeys())) tipoEntidade.DeleteBehavior = DeleteBehavior.ClientCascade;
 
             modelBuilder.Ignore<Event>();
 
