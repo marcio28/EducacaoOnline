@@ -25,7 +25,9 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Tests.Services
         public async Task IncluirCurso_CursoInvalido_DeveNaoIncluir()
         {
             // Arrange
-            _curso = new Curso();
+            _curso = new(
+                nome: "",
+                conteudoProgramatico: new ConteudoProgramatico(""));
 
             // Act
             await _cursoService.Incluir(_curso, CancellationToken.None);

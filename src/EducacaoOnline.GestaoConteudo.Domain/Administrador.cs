@@ -2,5 +2,10 @@
 
 namespace EducacaoOnline.GestaoConteudo.Domain
 {
-    public class Administrador : Entity, IAggregateRoot { }
+    public class Administrador : Entity, IAggregateRoot 
+    {
+        protected Administrador() { }
+
+        public Administrador(Guid id) : base(id) { }   
+    }
 }

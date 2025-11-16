@@ -9,16 +9,16 @@ namespace EducacaoOnline.GestaoAlunos.Domain
         public Collection<Matricula> Matriculas { get; private set; } = [];
         public int QuantidadeMatriculas => Matriculas.Count;
 
-        public Aluno() { }
+        protected Aluno() { }
 
         public Aluno(Guid id) : base(id) { }
 
-        public Matricula IniciarMatricula(Curso curso)
+        public Matricula IniciarMatricula(Guid idCurso)
         {
-            if (curso.DisponivelMatricula is false) throw new MatriculaCursoIndisponivelException();
+            if (idCurso == Guid.Empty) throw new MatriculaCursoInvalidoException();
 
             var matricula = new Matricula(idAluno: Id,
-                                          idCurso: curso.Id);
+                                          idCurso: idCurso);
 
             Matriculas.Add(matricula);
 

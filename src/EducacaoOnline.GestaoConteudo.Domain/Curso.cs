@@ -15,7 +15,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain
         public Collection<Aula>? Aulas { get; private set; }
         public int QuantidadeAulas => Aulas?.Count ?? 0;
 
-        public Curso() 
+        protected Curso() 
         { 
             ConteudoProgramatico = new(""); 
         }

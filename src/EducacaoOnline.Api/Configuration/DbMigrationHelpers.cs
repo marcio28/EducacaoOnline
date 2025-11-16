@@ -27,25 +27,26 @@ namespace EducacaoOnline.Api.Configuration
             using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
-            var gestaoConteudoContext = scope.ServiceProvider.GetRequiredService<GestaoConteudoContext>();
 
             if (env.IsDevelopment() || env.IsEnvironment("Docker") || env.IsEnvironment("Testing") || env.IsStaging())
             {
+                var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+                var gestaoConteudoContext = scope.ServiceProvider.GetRequiredService<GestaoConteudoContext>();
+
+                var idAdminUser = Guid.NewGuid();
 
                 await identityContext.Database.MigrateAsync();
-                await EnsureSeedDataIdentity(identityContext);
+                await EnsureSeedDataIdentity(identityContext, idAdminUser);
 
                 await gestaoConteudoContext.Database.MigrateAsync();
-                await EnsureSeedDataGestaoConteudo(gestaoConteudoContext);
+                await EnsureSeedDataGestaoConteudo(gestaoConteudoContext, idAdminUser);
             }
         }
 
-        private static async Task EnsureSeedDataIdentity(IdentityContext identityContext)
+        private static async Task EnsureSeedDataIdentity(IdentityContext identityContext, Guid idAdminUser)
         {
             if (await identityContext.Users.AnyAsync()) return;
 
-            var idAdminUser = Guid.NewGuid();
             var adminUser = new IdentityUser
             {
                 Id = idAdminUser.ToString(),
@@ -72,7 +73,7 @@ namespace EducacaoOnline.Api.Configuration
             await identityContext.SaveChangesAsync();
         }
 
-        private static async Task EnsureSeedDataGestaoConteudo(GestaoConteudoContext gestaoConteudoContext)
+        private static async Task EnsureSeedDataGestaoConteudo(GestaoConteudoContext gestaoConteudoContext, Guid idAdminUser)
         {
             if (await gestaoConteudoContext.Cursos.AnyAsync()) return;
 
@@ -81,6 +82,10 @@ namespace EducacaoOnline.Api.Configuration
                 conteudoProgramatico: new ConteudoProgramatico("Conteúdo Programático do Curso Seed 1"));
 
             await gestaoConteudoContext.Cursos.AddAsync(curso);
+
+            var administrador = new Administrador(idAdminUser);
+
+            await gestaoConteudoContext.Administradores.AddAsync(administrador);
 
             await gestaoConteudoContext.SaveChangesAsync();
         }
