@@ -28,7 +28,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
             _mapper = mapper;
         }
 
-        //[ClaimsAuthorize("Cursos", "INCLUIR")] // Desabilitado temporariamente para executar os testes de integração
+        //[ClaimsAuthorize("Cursos", "CADASTRAR")] // Desabilitado temporariamente para executar os testes de integração
         [HttpPost]
         public async Task<ActionResult> IncluirCurso([FromBody] CursoModel cursoModel, CancellationToken tokenDeCancelamento)
         {
@@ -42,14 +42,14 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
             return RespostaCustomizada(HttpStatusCode.Created);
         }
 
-        [ClaimsAuthorize("Cursos", "VISUALIZAR")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> ListarCursos(CancellationToken tokenDeCancelamento)
         {
             return RespostaCustomizada(HttpStatusCode.OK, _mapper.Map<IEnumerable<CursoModel>>(await _cursoService.Listar(tokenDeCancelamento)));
         }
 
-        [ClaimsAuthorize("Cursos", "ALTERAR")]
+        [ClaimsAuthorize("Cursos", "CADASTRAR")]
         [HttpPut("{id:Guid}")]
         public async Task<IActionResult> AlterarCurso(Guid id, [FromBody] CursoModel cursoModel, CancellationToken tokenDeCancelamento)
         {
@@ -69,7 +69,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
             return RespostaCustomizada(HttpStatusCode.NoContent);
         }
 
-        [ClaimsAuthorize("Cursos", "VISUALIZAR")]
+        [AllowAnonymous]
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult> ObterCursoPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
@@ -78,7 +78,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
             return RespostaCustomizada(HttpStatusCode.OK, curso);
         }
 
-        [ClaimsAuthorize("Cursos", "EXCLUIR")]
+        [ClaimsAuthorize("Cursos", "CADASTRAR")]
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> ExcluirCurso(Guid id, CancellationToken tokenDeCancelamento)
         {
