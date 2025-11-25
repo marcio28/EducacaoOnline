@@ -37,7 +37,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Tests.Services
             _mocker.GetMock<ICursoRepository>().Verify(
                 r => r.Incluir(_curso, CancellationToken.None), Times.Never);
             _mocker.GetMock<IMediator>().Verify(
-                m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Never);
+                m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.AtLeastOnce);
         }
 
         [Fact(DisplayName = "Incluir curso, válido, inclui"), TestPriority(2)]

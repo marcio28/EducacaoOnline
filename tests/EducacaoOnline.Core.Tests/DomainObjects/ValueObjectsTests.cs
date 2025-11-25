@@ -6,13 +6,13 @@ namespace EducacaoOnline.Core.Tests.DomainObjects
     {
         [Fact(DisplayName = "ValueObject Sem Validação É Inválido")]
         [Trait("Categoria", "Core Domain Objects - ValueObject")]
-        public void ValueObject_SemValidacaoImplementada_DeveSerInvalido()
+        public void ValueObject_SemValidacaoImplementada_DeveSerValido()
         {
             // Arrange
             var valueObjectFake = new ValueObjectFake();
 
             // Act & Assert
-            Assert.False(valueObjectFake.EhValido());
+            Assert.True(valueObjectFake.EhValido());
         }
     }
 

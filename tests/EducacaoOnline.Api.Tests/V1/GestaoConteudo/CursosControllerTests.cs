@@ -26,9 +26,11 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
             await _testsFixture.FazerLoginAdministrador();
             _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
 
+            var id = Guid.NewGuid();
             var cursoModel = new CursoModel
             {
-                Nome = $"Curso de Teste {Guid.NewGuid()}",
+                Id = id,
+                Nome = $"Curso de Teste {id}",
                 Descricao = "Descrição do Curso de Teste",
             };
 
