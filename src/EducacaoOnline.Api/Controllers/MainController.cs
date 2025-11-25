@@ -1,4 +1,5 @@
-﻿using EducacaoOnline.Core.Messages.ApplicationNotifications;
+﻿using EducacaoOnline.Core.Messages.DomainNotifications;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Net;
@@ -9,13 +10,17 @@ namespace EducacaoOnline.Api.Controllers
     [ApiController]
     public class MainController : Controller
     {
-        private readonly INotifiable _notifiable;
+        private readonly NotificacaoDominioHandler _notificacaoHandler;
+        private readonly IMediator _mediatorHandler;
+
         protected Guid UsuarioId = Guid.Empty;
 
         protected MainController(IHttpContextAccessor httpContextAccessor,
-                                 INotifiable notifiable)
+                                 IMediator mediatorHandler,
+                                 INotificationHandler<NotificacaoDominio> notificacaoHandler)
         {
-            _notifiable = notifiable;
+            _notificacaoHandler = (NotificacaoDominioHandler)notificacaoHandler;
+            _mediatorHandler = mediatorHandler;
 
             var usuario = httpContextAccessor.HttpContext?.User;
 
@@ -29,14 +34,14 @@ namespace EducacaoOnline.Api.Controllers
                 UsuarioId = Guid.Parse(declaracao.Value);
         }
 
-        protected ActionResult RespostaCustomizada(HttpStatusCode statusCode = HttpStatusCode.OK, object? result = null)
+        protected IActionResult RespostaCustomizada(HttpStatusCode statusCode = HttpStatusCode.OK, object? result = null)
         {
             if (OperacaoValida())
             {
                 return new ObjectResult(new
                 {
-                    Sucesso = true,
-                    Data = result
+                    success = true,
+                    data = result
                 })
                 {
                     StatusCode = (int)statusCode
@@ -45,40 +50,41 @@ namespace EducacaoOnline.Api.Controllers
 
             return BadRequest(new
             {
-                Sucesso = false,
-                Mensagens = _notifiable.GetNotifications().Select(n => n.Message).ToArray()
+                success = false,
+                errors = _notificacaoHandler.ObterNotificacoes().Select(n => n.Valor)
             });
         }
-        protected ActionResult RespostaCustomizada(ModelStateDictionary modelState)
+
+        protected IActionResult RespostaErro(ModelStateDictionary modelState)
         {
             var erros = modelState.Values.SelectMany(e => e.Errors);
+            List<string> mensagensErro =  [];
+
             foreach (var erro in erros)
             {
-                var mensagemErro = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
-                AdicionarErroProcessamento(mensagemErro);
+                mensagensErro.Add(erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message);
             }
 
-            return RespostaCustomizada();
-        }
-
-        protected ActionResult RespostaCustomizada(List<ApplicationNotification> notificacoes)
-        {
-            foreach (var notiticacao in notificacoes)
+            return BadRequest(new
             {
-                AdicionarErroProcessamento(notiticacao.Message);
-            }
-
-            return RespostaCustomizada();
+                success = false,
+                errors = mensagensErro
+            });
         }
 
         protected bool OperacaoValida()
         {
-            return _notifiable.IsValid();
+            return _notificacaoHandler.TemNotificacoes() is false;
         }
 
-        protected void AdicionarErroProcessamento(string erro)
+        protected IEnumerable<string> ObterMensagensErro()
         {
-            _notifiable.AddNotification(new ApplicationNotification(erro));
+            return [.. _notificacaoHandler.ObterNotificacoes().Select(n => n.Valor)];
+        }
+
+        protected void NotificarErro(string codigo, string mensagem)
+        {
+            _mediatorHandler.Publish(new NotificacaoDominio(codigo, mensagem));
         }
     }
 }

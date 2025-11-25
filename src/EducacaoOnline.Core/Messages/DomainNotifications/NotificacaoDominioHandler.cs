@@ -2,22 +2,22 @@
 
 namespace EducacaoOnline.Core.Messages.DomainNotifications
 {
-    public class DomainNotificationHandler : INotificationHandler<DomainNotification>
+    public class NotificacaoDominioHandler : INotificationHandler<NotificacaoDominio>
     {
-        List<DomainNotification> _notificacoes;
+        List<NotificacaoDominio> _notificacoes;
 
-        public DomainNotificationHandler()
+        public NotificacaoDominioHandler()
         {
             _notificacoes = [];
         }
 
-        public Task Handle(DomainNotification message, CancellationToken cancellationToken)
+        public Task Handle(NotificacaoDominio message, CancellationToken cancellationToken)
         {
             _notificacoes.Add(message);
             return Task.CompletedTask;
         }
 
-        public virtual List<DomainNotification> ObterNotificacoes()
+        public virtual List<NotificacaoDominio> ObterNotificacoes()
         {
             return _notificacoes;
         }

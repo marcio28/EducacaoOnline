@@ -1,9 +1,10 @@
-﻿using EducacaoOnline.Core.Messages.ApplicationNotifications;
+﻿using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.GestaoAlunos.Data.Repositories;
 using EducacaoOnline.GestaoAlunos.Domain.Repositories;
 using EducacaoOnline.GestaoConteudo.Data.Repositories;
 using EducacaoOnline.GestaoConteudo.Domain.Repositories;
 using EducacaoOnline.GestaoConteudo.Domain.Services;
+using MediatR;
 
 namespace EducacaoOnline.Api.Configuration
 {
@@ -11,14 +12,14 @@ namespace EducacaoOnline.Api.Configuration
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-            // Repositories
+            // Notificações
+            services.AddScoped<INotificationHandler<NotificacaoDominio>, NotificacaoDominioHandler>();
+
+            // Repositórios
             services.AddScoped<IAlunoRepository, AlunoRepository>();
             services.AddScoped<ICursoRepository, CursoRepository>();
 
-            //Notification
-            services.AddScoped<INotifiable, Notifiable>();
-
-            //Services
+            // Serviços
             services.AddScoped<ICursoService, CursoService>();
 
             return services;

@@ -1,19 +1,22 @@
 ﻿
 using EducacaoOnline.Core.Messages.ApplicationNotifications;
+using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.GestaoConteudo.Domain.Repositories;
+using MediatR;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EducacaoOnline.GestaoConteudo.Domain.Services
 {
     public class CursoService : ICursoService
     {
         private readonly ICursoRepository _cursoRepository;
-        private readonly INotifiable _notifiable;
+        private readonly IMediator _mediator;
 
         public CursoService(ICursoRepository cursoRepository,
-                            INotifiable notifiable)
+                            IMediator mediator)
         {
             _cursoRepository = cursoRepository;
-            _notifiable = notifiable;
+            _mediator = mediator;
         }   
 
         public async Task Incluir(Curso curso, CancellationToken tokenDeCancelamento)
@@ -22,7 +25,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             {
                 foreach (var erro in curso.Erros)
                 {
-                    _notifiable.AddNotification(new ApplicationNotification(erro.ErrorMessage));
+                    await _mediator.Publish(new NotificacaoDominio("Curso", erro.ErrorMessage), tokenDeCancelamento);
                 }
                 return;
             }
@@ -30,14 +33,14 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             var cursoExistente = await _cursoRepository.ObterPorId(curso.Id, tokenDeCancelamento);
             if (cursoExistente is not null)
             {
-                _notifiable.AddNotification(new ApplicationNotification("Curso já cadastrado."));
+                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso já cadastrado."), tokenDeCancelamento);
                 return;
             }
 
             bool existeCursoComMesmoNome = await _cursoRepository.Existe(curso.Nome!, tokenDeCancelamento);
             if (existeCursoComMesmoNome)
             {
-                _notifiable.AddNotification(new ApplicationNotification("Já existe um curso cadastrado com este nome."));
+                await _mediator.Publish(new NotificacaoDominio("Curso", "Já existe um curso cadastrado com este nome."), tokenDeCancelamento);
                 return;
             }
 
@@ -55,7 +58,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             var curso = await _cursoRepository.ObterPorId(id, tokenDeCancelamento);
             if (curso is null)
             {
-                _notifiable.AddNotification(new ApplicationNotification("Curso não encontrado."));
+                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso não encontrado."), tokenDeCancelamento);
                 return;
             }
 

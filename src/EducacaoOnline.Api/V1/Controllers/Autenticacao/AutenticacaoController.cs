@@ -1,8 +1,10 @@
 ﻿using EducacaoOnline.Api.Controllers;
 using EducacaoOnline.Api.Models;
 using EducacaoOnline.Core.Messages.ApplicationNotifications;
+using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.GestaoAlunos.Domain;
 using EducacaoOnline.GestaoAlunos.Domain.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,10 +30,11 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
         public AutenticacaoController(
             IAlunoRepository alunoRepository,
             IHttpContextAccessor httpContextAccessor,
+            IMediator mediatorHandler,
             IOptions<JwtSettings> jwtSettings,
-            INotifiable notifiable,
+            INotificationHandler<NotificacaoDominio> _notificacaoHandler,
             SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager) : base(httpContextAccessor, notifiable)
+            UserManager<IdentityUser> userManager) : base(httpContextAccessor, mediatorHandler, _notificacaoHandler)
         {
             _alunoRepository = alunoRepository;
             _jwtSettings = jwtSettings.Value;
@@ -43,9 +46,9 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Registrar(RegistroUsuarioModel registroUsuario)
+        public async Task<IActionResult> Registrar(RegistroUsuarioModel registroUsuario)
         {
-            if (ModelState.IsValid is false) return RespostaCustomizada(ModelState);
+            if (ModelState.IsValid is false) return RespostaErro(ModelState);
 
             var usuario = new IdentityUser
             {
@@ -76,9 +79,9 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Login(LoginUsuarioModel loginUsuario)
+        public async Task<IActionResult> Login(LoginUsuarioModel loginUsuario)
         {
-            if (ModelState.IsValid is false) return RespostaCustomizada(ModelState);
+            if (ModelState.IsValid is false) return RespostaErro(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(
                 loginUsuario.Email, 
@@ -88,11 +91,11 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
 
             if (result.Succeeded is false)
             {
-                AdicionarErroProcessamento("Usuário ou senha inválidos.");
+                NotificarErro("Login", "Usuário ou senha inválidos.");
                 return RespostaCustomizada();
             }
 
-            return RespostaCustomizada(HttpStatusCode.OK, GerarJwt(loginUsuario.Email));
+            return Ok(await GerarJwt(loginUsuario.Email));
         }
 
         private async Task<string> GerarJwt(string email)

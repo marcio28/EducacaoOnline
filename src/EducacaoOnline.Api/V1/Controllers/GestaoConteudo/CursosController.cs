@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using EducacaoOnline.Api.Controllers;
 using EducacaoOnline.Api.Extensions;
-using EducacaoOnline.Core.Messages.ApplicationNotifications;
+using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.GestaoConteudo.Application.Models;
 using EducacaoOnline.GestaoConteudo.Domain;
 using EducacaoOnline.GestaoConteudo.Domain.Services;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -22,7 +23,8 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
         public CursosController(ICursoService cursoService,
                                 IHttpContextAccessor httpContextAccessor,
                                 IMapper mapper,
-                                INotifiable notifiable) : base(httpContextAccessor, notifiable)
+                                IMediator mediatorHandler,
+                                INotificationHandler<NotificacaoDominio> _notificacaoHandler) : base(httpContextAccessor, mediatorHandler, _notificacaoHandler)
         {
             _cursoService = cursoService;
             _mapper = mapper;
@@ -30,11 +32,11 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
 
         //[ClaimsAuthorize("Cursos", "CADASTRAR")] // Desabilitado temporariamente para executar os testes de integração
         [HttpPost]
-        public async Task<ActionResult> IncluirCurso([FromBody] CursoModel cursoModel, CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> IncluirCurso([FromBody] CursoModel cursoModel, CancellationToken tokenDeCancelamento)
         {
             if (ModelState.IsValid is false)
             {
-                return RespostaCustomizada(ModelState);
+                return RespostaErro(ModelState);
             }
 
             await _cursoService.Incluir(_mapper.Map<Curso>(cursoModel), tokenDeCancelamento);
@@ -44,7 +46,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult> ListarCursos(CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> ListarCursos(CancellationToken tokenDeCancelamento)
         {
             return RespostaCustomizada(HttpStatusCode.OK, _mapper.Map<IEnumerable<CursoModel>>(await _cursoService.Listar(tokenDeCancelamento)));
         }
@@ -55,13 +57,13 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
         {
             if (id != cursoModel.Id)
             {
-                AdicionarErroProcessamento("O Id informado não é o mesmo que foi passado no corpo da requisição.");
+                NotificarErro("ErroValidacao", "O Id informado não é o mesmo que foi passado no corpo da requisição.");
                 return RespostaCustomizada();
             }
 
             if (ModelState.IsValid is false)
             {
-                return RespostaCustomizada(ModelState);
+                return RespostaErro(ModelState);
             }
 
             await _cursoService.Alterar(_mapper.Map<Curso>(cursoModel), tokenDeCancelamento);
@@ -71,7 +73,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
 
         [AllowAnonymous]
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult> ObterCursoPorId(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> ObterCursoPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
             var curso = _mapper.Map<CursoModel>(await _cursoService.ObterPorId(id, tokenDeCancelamento));
 
@@ -80,11 +82,11 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
 
         [ClaimsAuthorize("Cursos", "CADASTRAR")]
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult> ExcluirCurso(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> ExcluirCurso(Guid id, CancellationToken tokenDeCancelamento)
         {
             if (id == Guid.Empty)
             {
-                AdicionarErroProcessamento("O id não pode ser vazio.");
+                NotificarErro("ErroValidacao", "O id não pode ser vazio.");
                 return RespostaCustomizada();
             }
 

@@ -1,4 +1,5 @@
 using EducacaoOnline.Api.Configuration;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services
     .AddSwaggerConfiguration()
     .AddDbContextConfig(builder.Configuration)
     .AddIdentityConfig()
+    .AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
     .RegisterServices()
     .AddJwtConfig(builder.Configuration)
     .AddAutoMapper();
