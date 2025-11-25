@@ -13,7 +13,7 @@ namespace EducacaoOnline.Core.Tests.Messages.Notifications
             var valor = "ValorTeste";
 
             // Act
-            var domainNotification = new DomainNotification(chave, valor);
+            var domainNotification = new NotificacaoDominio(chave, valor);
 
             // Assert
             Assert.NotEqual(Guid.Empty, domainNotification.Id);

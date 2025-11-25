@@ -51,7 +51,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
 
             foreach (var error in message.Erros)
             {
-                _mediator.Publish(new DomainNotification(message.MessageType, error.ErrorMessage));
+                _mediator.Publish(new NotificacaoDominio(message.MessageType, error.ErrorMessage));
             }
 
             return false;

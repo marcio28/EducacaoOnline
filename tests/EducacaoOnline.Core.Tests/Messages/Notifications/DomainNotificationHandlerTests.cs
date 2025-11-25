@@ -9,7 +9,7 @@ namespace EducacaoOnline.Core.Tests.Messages.Notifications
         public void DomainNotificationHandler_Propriedades_DevemEstarPreenchidas()
         {
             // Arrange & Act
-            var domainNotificationHandler = new DomainNotificationHandler();
+            var domainNotificationHandler = new NotificacaoDominioHandler();
 
             // Assert
             Assert.NotNull(domainNotificationHandler);
@@ -22,8 +22,8 @@ namespace EducacaoOnline.Core.Tests.Messages.Notifications
         public async Task DomainNotificationHandler_Handle_DeveAdicionarNotificacao()
         {
             // Arrange
-            var domainNotificationHandler = new DomainNotificationHandler();
-            var notification = new DomainNotification("CHAVE_TESTE", "VALOR_TESTE");
+            var domainNotificationHandler = new NotificacaoDominioHandler();
+            var notification = new NotificacaoDominio("CHAVE_TESTE", "VALOR_TESTE");
 
             // Act
             await domainNotificationHandler.Handle(notification, CancellationToken.None);
