@@ -2,6 +2,9 @@
 {
     public enum StatusMatricula
     {
-        AguardandoPagamento = 0
+        AguardandoPagamento = 0,
+        Ativa = 1,
+        Cancelada = 2,
+        Expirada = 3
     }
 }
