@@ -1,8 +1,9 @@
-﻿using EducacaoOnline.Api.Tests.Configuration;
+﻿using System.Net;
+using System.Net.Http.Json;
+using EducacaoOnline.Api.Tests.Configuration;
 using EducacaoOnline.Api.Tests.Extensions;
 using EducacaoOnline.GestaoConteudo.Application.Models;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http.Json;
 
 namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
 {
@@ -62,6 +63,119 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
 
             // Assert
             Assert.Equal(StatusCodes.Status400BadRequest, (int)postResponse.StatusCode);
+        }
+
+        [Fact(DisplayName = "Listar cursos, curso criado, retorna Ok e lista contendo curso")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
+        public async Task ListarCursos_CursoCriado_DeveRetornarOkEListaContendoCurso()
+        {
+            // Arrange
+            await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
+
+            var id = Guid.NewGuid();
+            var cursoModel = new CursoModel
+            {
+                Id = id,
+                Nome = $"Curso Listar Teste {id}",
+                Descricao = "Descrição Listar"
+            };
+
+            var postResponse = await _testsFixture.Client.PostAsJsonAsync(URICursos, cursoModel);
+            Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+
+            // Act
+            var getResponse = await _testsFixture.Client.GetAsync(URICursos);
+            var cursos = await getResponse.Content.ReadFromJsonAsync<IEnumerable<CursoModel>>();
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+            Assert.NotNull(cursos);
+            Assert.Contains(cursos, c => c.Id == id && c.Nome == cursoModel.Nome);
+        }
+
+        [Fact(DisplayName = "Alterar curso, válido, retorna NoContent")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
+        public async Task AlterarCurso_CursoValido_DeveRetornarNoContent()
+        {
+            // Arrange
+            await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
+
+            var id = Guid.NewGuid();
+            var cursoModel = new CursoModel
+            {
+                Id = id,
+                Nome = $"Curso Alterar Teste {id}",
+                Descricao = "Descrição Alterar Original"
+            };
+
+            var postResponse = await _testsFixture.Client.PostAsJsonAsync(URICursos, cursoModel);
+            Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+
+            // Act
+            cursoModel.Nome = "Curso Alterado Nome";
+            cursoModel.Descricao = "Descrição Alterada";
+            var putResponse = await _testsFixture.Client.PutAsJsonAsync($"{URICursos}/{id}", cursoModel);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, putResponse.StatusCode);
+        }
+
+        [Fact(DisplayName = "Obter curso por id, id existente, retorna OK com curso")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
+        public async Task ObterCursoPorId_IdExistente_DeveRetornarOkComCurso()
+        {
+            // Arrange
+            await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
+
+            var id = Guid.NewGuid();
+            var cursoModel = new CursoModel
+            {
+                Id = id,
+                Nome = $"Curso Obter Teste {id}",
+                Descricao = "Descrição Obter"
+            };
+
+            var postResponse = await _testsFixture.Client.PostAsJsonAsync(URICursos, cursoModel);
+            Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+
+            // Act
+            var getResponse = await _testsFixture.Client.GetAsync($"{URICursos}/{id}");
+            var cursoObtido = await getResponse.Content.ReadFromJsonAsync<CursoModel>();
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+            Assert.NotNull(cursoObtido);
+            Assert.Equal(cursoModel.Id, cursoObtido.Id);
+            Assert.Equal(cursoModel.Nome, cursoObtido.Nome);
+        }
+
+        [Fact(DisplayName = "Excluir curso, id existente, retorna NoContent")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
+        public async Task ExcluirCurso_IdExistente_DeveRetornarNoContent()
+        {
+            // Arrange
+            await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
+
+            var id = Guid.NewGuid();
+            var cursoModel = new CursoModel
+            {
+                Id = id,
+                Nome = $"Curso Excluir Teste {id}",
+                Descricao = "Descrição Excluir"
+            };
+
+            var postResponse = await _testsFixture.Client.PostAsJsonAsync(URICursos, cursoModel);
+            Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+
+            // Act
+            var deleteResponse = await _testsFixture.Client.DeleteAsync($"{URICursos}/{id}");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
         }
     }
 }
