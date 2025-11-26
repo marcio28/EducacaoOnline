@@ -4,9 +4,9 @@ using System.Security.Claims;
 
 namespace EducacaoOnline.Api.Extensions
 {
-    public class RequisitoClaimFilter(Claim claim) : IAuthorizationFilter
+    public class RequisitoDeclaracaoFilter(Claim declaracao) : IAuthorizationFilter
     {
-        private readonly Claim _claim = claim;
+        private readonly Claim _declaracao = declaracao;
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
@@ -18,7 +18,7 @@ namespace EducacaoOnline.Api.Extensions
                 return;
             }
 
-            if (ClaimsAuthorization.ValidarClaimsUsuario(context.HttpContext, _claim.Type, _claim.Value) is false)
+            if (AutorizacaoDeclaracoes.ValidarDeclaracoesUsuario(context.HttpContext, _declaracao.Type, _declaracao.Value) is false)
                 context.Result = new StatusCodeResult(403);
         }
     }
