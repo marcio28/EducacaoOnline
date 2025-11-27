@@ -1,9 +1,7 @@
 ﻿
-using EducacaoOnline.Core.Messages.ApplicationNotifications;
 using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.GestaoConteudo.Domain.Repositories;
 using MediatR;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EducacaoOnline.GestaoConteudo.Domain.Services
 {
@@ -48,9 +46,36 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             await _cursoRepository.UnitOfWork.Commit();
         }
 
-        public Task Alterar(Curso curso, CancellationToken tokenDeCancelamento)
+        public async Task Alterar(Curso curso, CancellationToken tokenDeCancelamento)
         {
-            throw new NotImplementedException();
+            if (curso.EhValido() is false)
+            {
+                foreach (var erro in curso.Erros)
+                {
+                    await _mediator.Publish(new NotificacaoDominio("Curso", erro.ErrorMessage), tokenDeCancelamento);
+                }
+                return;
+            }
+
+            var cursoExistente = await _cursoRepository.ObterPorId(curso.Id, tokenDeCancelamento);
+            if (cursoExistente is null)
+            {
+                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso não encontrado."), tokenDeCancelamento);
+                return;
+            }
+
+            bool existeCursoComMesmoNome = await _cursoRepository.Existe(curso.Nome!, tokenDeCancelamento);
+            // se já existe um curso com o mesmo nome e não é o próprio registro que está sendo alterado
+            if (existeCursoComMesmoNome && !string.Equals(cursoExistente.Nome, curso.Nome, StringComparison.OrdinalIgnoreCase))
+            {
+                await _mediator.Publish(new NotificacaoDominio("Curso", "Já existe um curso cadastrado com este nome."), tokenDeCancelamento);
+                return;
+            }
+
+            cursoExistente.Atualizar(curso.Nome!, curso.ConteudoProgramatico);
+
+            await _cursoRepository.Alterar(cursoExistente, tokenDeCancelamento);
+            await _cursoRepository.UnitOfWork.Commit();
         }
 
         public async Task Excluir(Guid id, CancellationToken tokenDeCancelamento)
@@ -66,13 +91,22 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             await _cursoRepository.UnitOfWork.Commit();
         }
 
-        public Task<IEnumerable<Curso>> Listar(CancellationToken tokenDeCancelamento)
+        public async Task<IEnumerable<Curso>> Listar(CancellationToken tokenDeCancelamento)
         {
-            throw new NotImplementedException();
+            var cursos = await _cursoRepository.ListarSemContexto(tokenDeCancelamento);
+            return cursos;
         }
-        public Task<Curso> ObterPorId(Guid id, CancellationToken tokenDeCancelamento)
+
+        public async Task<Curso> ObterPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            throw new NotImplementedException();
+            var curso = await _cursoRepository.ObterPorId(id, tokenDeCancelamento);
+            if (curso is null)
+            {
+                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso não encontrado."), tokenDeCancelamento);
+                return default!;
+            }
+
+            return curso;
         }
     }
 }

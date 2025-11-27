@@ -15,9 +15,9 @@ namespace EducacaoOnline.GestaoConteudo.Domain
         public Collection<Aula>? Aulas { get; private set; }
         public int QuantidadeAulas => Aulas?.Count ?? 0;
 
-        protected Curso() 
+        public Curso(Guid id) : base(id) 
         { 
-            ConteudoProgramatico = new(""); 
+            ConteudoProgramatico = new("");
         }
 
         public Curso(string nome,
@@ -66,6 +66,12 @@ namespace EducacaoOnline.GestaoConteudo.Domain
             Aulas.Add(aula);
 
             return aula;
+        }
+
+        public void Atualizar(string nome, ConteudoProgramatico conteudoProgramatico)
+        {
+            Nome = nome;
+            ConteudoProgramatico = conteudoProgramatico;
         }
     }
 }

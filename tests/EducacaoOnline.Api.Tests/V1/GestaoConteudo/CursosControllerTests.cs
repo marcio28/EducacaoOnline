@@ -1,9 +1,10 @@
-﻿using System.Net;
-using System.Net.Http.Json;
+﻿using EducacaoOnline.Api.Controllers;
 using EducacaoOnline.Api.Tests.Configuration;
 using EducacaoOnline.Api.Tests.Extensions;
 using EducacaoOnline.GestaoConteudo.Application.Models;
 using Microsoft.AspNetCore.Http;
+using System.Net;
+using System.Net.Http.Json;
 
 namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
 {
@@ -86,7 +87,8 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
 
             // Act
             var getResponse = await _testsFixture.Client.GetAsync(URICursos);
-            var cursos = await getResponse.Content.ReadFromJsonAsync<IEnumerable<CursoModel>>();
+            var wrapper = await getResponse.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<CursoModel>>>();
+            var cursos = wrapper?.data;
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
@@ -114,7 +116,7 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
             Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
 
             // Act
-            cursoModel.Nome = "Curso Alterado Nome";
+            cursoModel.Nome = $"Curso Alterado Nome {id}";
             cursoModel.Descricao = "Descrição Alterada";
             var putResponse = await _testsFixture.Client.PutAsJsonAsync($"{URICursos}/{id}", cursoModel);
 
@@ -143,7 +145,8 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
 
             // Act
             var getResponse = await _testsFixture.Client.GetAsync($"{URICursos}/{id}");
-            var cursoObtido = await getResponse.Content.ReadFromJsonAsync<CursoModel>();
+            var wrapper = await getResponse.Content.ReadFromJsonAsync<ApiResponse<CursoModel>>();
+            var cursoObtido = wrapper?.data;
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);

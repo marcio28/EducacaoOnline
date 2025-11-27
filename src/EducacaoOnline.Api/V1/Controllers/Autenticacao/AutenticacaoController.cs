@@ -1,6 +1,5 @@
 ﻿using EducacaoOnline.Api.Controllers;
 using EducacaoOnline.Api.Models;
-using EducacaoOnline.Core.Messages.ApplicationNotifications;
 using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.GestaoAlunos.Domain;
 using EducacaoOnline.GestaoAlunos.Domain.Repositories;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 

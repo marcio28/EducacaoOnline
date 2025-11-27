@@ -4,7 +4,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Events
 {
     public class PagamentoRealizadoEventTests
     {
-        [Fact]
+        [Fact(DisplayName = "PagamentoRealizadoEvent, propriedades preenchidas")]
         [Trait("Categoria", "Pagamento e Faturamento - PagamentoRealizadoEvent")]
         public void PagamentoRealizadoEvent_Propriedades_DevemEstarPreenchidas()
         {

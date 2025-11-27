@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EducacaoOnline.Api.Controllers;
-using EducacaoOnline.Api.Extensions;
 using EducacaoOnline.Core.Messages.DomainNotifications;
 using EducacaoOnline.GestaoConteudo.Application.Models;
 using EducacaoOnline.GestaoConteudo.Domain;
@@ -39,7 +38,9 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
                 return RespostaErro(ModelState);
             }
 
-            await _cursoService.Incluir(_mapper.Map<Curso>(cursoModel), tokenDeCancelamento);
+            var curso = _mapper.Map<Curso>(cursoModel);
+
+            await _cursoService.Incluir(curso, tokenDeCancelamento);
 
             return RespostaCustomizada(HttpStatusCode.Created);
         }

@@ -9,6 +9,7 @@ namespace EducacaoOnline.GestaoConteudo.Application.AutoMapper
         public ModelToDomainMappingProfile()
         {
             CreateMap<CursoModel, Curso>()
+                .ConstructUsing(ctor => new Curso(ctor.Id))
                 .ForMember(d => d.ConteudoProgramatico, o => o.MapFrom(s => s.Descricao));
         }
     }
