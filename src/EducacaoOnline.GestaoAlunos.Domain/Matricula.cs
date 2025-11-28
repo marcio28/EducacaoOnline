@@ -1,4 +1,4 @@
-﻿using EducacaoOnline.Core.DomainObjects;
+using EducacaoOnline.Core.DomainObjects;
 
 namespace EducacaoOnline.GestaoAlunos.Domain
 {
@@ -16,6 +16,21 @@ namespace EducacaoOnline.GestaoAlunos.Domain
         {
             IdAluno = idAluno;
             IdCurso = idCurso;
+        }
+
+        public void AtivarMatricula()
+        {
+            Status = StatusMatricula.Ativa;
+        }
+
+        public void CancelarMatricula()
+        {
+            Status = StatusMatricula.Cancelada;
+        }
+
+        public void ExpirarMatricula()
+        {
+            Status = StatusMatricula.Expirada;
         }
     }
 }
