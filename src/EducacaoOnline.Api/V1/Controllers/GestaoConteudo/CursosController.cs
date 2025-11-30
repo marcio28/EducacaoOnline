@@ -93,7 +93,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
 
             await _cursoService.Excluir(id, tokenDeCancelamento);
 
-            return RespostaCustomizada(HttpStatusCode.NoContent);
+            return NoContent();
         }
     }
 }
