@@ -63,7 +63,11 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
                 return Ok(GerarJwt(usuario.Email));
             }
 
-            return Ok();
+            foreach (var erro in result.Errors)
+            {
+                NotificarErro(erro.Code, erro.Description);
+            }
+            return RespostaCustomizada();
         }
 
         private async void IncluirAluno(IdentityUser usuario, CancellationToken tokenCancelamento)
@@ -108,12 +112,6 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
             declaracoes.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             declaracoes.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
             declaracoes.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
-
-            var papeisDoUsuario = await _userManager.GetRolesAsync(usuario);
-            foreach (var papelDoUsuario in papeisDoUsuario)
-            {
-                declaracoes.Add(new Claim(ClaimTypes.Role, papelDoUsuario));
-            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
 

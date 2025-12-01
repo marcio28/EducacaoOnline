@@ -16,6 +16,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
     [Route("api/v{version:apiVersion}/gestao-conteudo/cursos")]
     public class CursosController : MainController
     {
+    
         private readonly ICursoService _cursoService;
         private readonly IMapper _mapper;
 
@@ -58,7 +59,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
         {
             if (id != cursoModel.Id)
             {
-                NotificarErro("ErroValidacao", "O Id informado não é o mesmo que foi passado no corpo da requisição.");
+                NotificarErro("ErroValidacao", MensagensControllers.IdDiferente);
                 return RespostaCustomizada();
             }
 

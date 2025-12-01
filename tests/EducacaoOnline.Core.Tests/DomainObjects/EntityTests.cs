@@ -11,6 +11,7 @@ namespace EducacaoOnline.Core.Tests.DomainObjects
 
         public EntityTests()
         {
+            // Arrange
             _entidadeFakeValida = new EntidadeFake(1);
             _entidadeFakeInvalida = new EntidadeFake(0);
         }
@@ -65,8 +66,6 @@ namespace EducacaoOnline.Core.Tests.DomainObjects
         [Trait("Categoria", "Core Domain Objects - Entity")]
         public void CompararEntidades_Iguais_DeveRetornarFalse()
         {
-            // Arrange feito no construtor
-
             // Act
             var saoIguais = _entidadeFakeValida == _entidadeFakeInvalida;
 
@@ -78,8 +77,6 @@ namespace EducacaoOnline.Core.Tests.DomainObjects
         [Trait("Categoria", "Core Domain Objects - Entity")]
         public void CompararEntidades_Diferentes_DeveRetornarTrue()
         {
-            // Arrange feito no construtor
-
             // Act
             var saoDiferentes = _entidadeFakeValida != _entidadeFakeInvalida;
 
@@ -91,8 +88,6 @@ namespace EducacaoOnline.Core.Tests.DomainObjects
         [Trait("Categoria", "Core Domain Objects - Entity")]
         public void EntidadeNova_SemErros_DeveTerZeroErros()
         {
-            // Arrange & Act feitos no construtor
-
             // Assert
             Assert.Equal(0, _entidadeFakeValida.QuantidadeErros);
         }
@@ -101,44 +96,143 @@ namespace EducacaoOnline.Core.Tests.DomainObjects
         [Trait("Categoria", "Core Domain Objects - Entity")]
         public void EntidadeNova_ComErros_DeveTerErros()
         {
-            // Arrange feito no construtor
-
             // Act
             _entidadeFakeInvalida.EhValido();
 
             // Assert
             Assert.Equal(1, _entidadeFakeInvalida.QuantidadeErros);
         }
-    }
 
-    public class EntidadeFake : Entity
-    {
-        public int Quantidade { get; }
-
-        public EntidadeFake(int quantidade)
+        [Fact(DisplayName = "Entidades com mesmo Id são iguais")]
+        [Trait("Categoria", "Core Domain Objects - Entity")]
+        public void Entidades_ComMesmoId_DevemSerIguais()
         {
-            Quantidade = quantidade;
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            var a = new EntidadeComId(id);
+            var b = new EntidadeComId(id);
+
+            // Assert
+            Assert.True(a.Equals(b));
+            Assert.True(a == b);
+            Assert.False(a != b);
+            Assert.Equal(a.GetHashCode(), b.GetHashCode());
         }
 
-        public override bool EhValido()
+        [Fact(DisplayName = "Equals com null retorna false")]
+        [Trait("Categoria", "Core Domain Objects - Entity")]
+        public void Equals_ComNull_DeveRetornarFalse()
         {
-            ValidationResult = new EntidadeFakeValidator().Validate(this);
+            // Arrange & Act
+            var a = new EntidadeComId(Guid.NewGuid());
 
-            var ehValido = ValidationResult.IsValid;
-
-            return ehValido;
+            // Assert
+            Assert.False(a.Equals(null));
         }
-    }
 
-    public class EntidadeFakeValidator : AbstractValidator<EntidadeFake>
-    {
-        public EntidadeFakeValidator()
+        [Fact(DisplayName = "Operador == com ambos null retorna true")]
+        [Trait("Categoria", "Core Domain Objects - Entity")]
+        public void OperadorIgual_AmbosNull_DeveRetornarTrue()
         {
-            RuleFor(e => e.Quantidade).GreaterThan(0);
-        }
-    }
+            // Arrange & Act
+            Entity? a = null;
+            Entity? b = null;
 
-    public class FakeEvent : Event
-    {
+            // Assert
+            Assert.True(a == b);
+            Assert.False(a != b);
+        }
+
+        [Fact(DisplayName = "Operador == com um null retorna false")]
+        [Trait("Categoria", "Core Domain Objects - Entity")]
+        public void OperadorIgual_UmNull_DeveRetornarFalse()
+        {
+            // Arrange & Act
+            Entity? a = null;
+            var b = new EntidadeComId(Guid.NewGuid());
+
+            // Assert
+            Assert.False(a == b);
+            Assert.True(a != b);
+        }
+
+        [Fact(DisplayName = "GetHashCode consistente para mesmo Id")]
+        [Trait("Categoria", "Core Domain Objects - Entity")]
+        public void GetHashCode_IdsIguais_DevemSerIguais()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            var a = new EntidadeComId(id);
+            var b = new EntidadeComId(id);
+
+            // Assert
+            Assert.Equal(a.GetHashCode(), b.GetHashCode());
+        }
+
+        [Fact(DisplayName = "ToString retorna formato esperado")]
+        [Trait("Categoria", "Core Domain Objects - Entity")]
+        public void ToString_DeveRetornarFormatoEsperado()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var entidade = new EntidadeComId(id);
+
+            // Act
+            var esperado = $"{entidade.GetType().Name} [Id={id}]";
+
+            // Assert
+            Assert.Equal(esperado, entidade.ToString());
+        }
+
+        [Fact(DisplayName = "EhValido padrão da base retorna true")]
+        [Trait("Categoria", "Core Domain Objects - Entity")]
+        public void EhValido_Padrao_RetornaTrue()
+        {
+            // Arrange & Act
+            var simple = new EntidadeSemValidacao();
+
+            // Assert
+            Assert.True(simple.EhValido());
+        }
+
+        private class EntidadeComId : Entity
+        {
+            public EntidadeComId(Guid id) : base(id) { }
+        }
+
+        private class EntidadeSemValidacao : Entity { }
+
+        private class EntidadeFake : Entity
+        {
+            public int Quantidade { get; }
+
+            public EntidadeFake(int quantidade)
+            {
+                Quantidade = quantidade;
+            }
+
+            public override bool EhValido()
+            {
+                ValidationResult = new EntidadeFakeValidator().Validate(this);
+
+                var ehValido = ValidationResult.IsValid;
+
+                return ehValido;
+            }
+        }
+
+        private class EntidadeFakeValidator : AbstractValidator<EntidadeFake>
+        {
+            public EntidadeFakeValidator()
+            {
+                RuleFor(e => e.Quantidade).GreaterThan(0);
+            }
+        }
+
+        private class FakeEvent : Event { }
     }
 }

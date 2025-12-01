@@ -10,12 +10,12 @@ namespace EducacaoOnline.GestaoConteudo.Application.Models
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(CursoValidator.TamanhoNomeMaximo, 
-            ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres.", MinimumLength = CursoValidator.TamanhoNomeMinimo)]
+            ErrorMessage = CursoValidator.TamanhoNomeErroMsg, MinimumLength = CursoValidator.TamanhoNomeMinimo)]
         public required string Nome { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(CursoValidator.TamanhoConteudoMaximo, 
-            ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres.", MinimumLength = CursoValidator.TamanhoConteudoMinimo)]
+            ErrorMessage = CursoValidator.TamanhoConteudoErroMsg, MinimumLength = CursoValidator.TamanhoConteudoMinimo)]
         public required string Descricao { get; set; }
     }
 }

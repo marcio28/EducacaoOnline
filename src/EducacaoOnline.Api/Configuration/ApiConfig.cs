@@ -26,11 +26,6 @@ namespace EducacaoOnline.Api.Configuration
         {
             app.UseForwardedHeaders();
 
-            if (environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
             app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();

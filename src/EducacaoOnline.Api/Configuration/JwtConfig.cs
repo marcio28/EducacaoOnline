@@ -14,9 +14,18 @@ namespace EducacaoOnline.Api.Configuration
 
             services.Configure<JwtSettings>(JwtSettingsSection);
 
-            var jwtSettings = JwtSettingsSection.Get<JwtSettings>();
+            var jwtSettings = JwtSettingsSection.Get<JwtSettings>() ?? throw new InvalidOperationException("Configuração de JWT inválida.");
 
-            var key = Encoding.ASCII.GetBytes(jwtSettings?.Segredo ?? string.Empty);
+            if (string.IsNullOrEmpty(jwtSettings.Segredo))
+                throw new InvalidOperationException("O segredo do JWT não pode ser nulo ou vazio.");
+
+            if (string.IsNullOrEmpty(jwtSettings.Emissor))
+                throw new InvalidOperationException("O emissor do JWT não pode ser nulo ou vazio.");
+
+            if (string.IsNullOrEmpty(jwtSettings.Audiencia))
+                throw new InvalidOperationException("A audiência do JWT não pode ser nulo ou vazio.");
+
+            var key = Encoding.ASCII.GetBytes(jwtSettings.Segredo);
 
             services.AddAuthentication(options =>
             {
@@ -31,8 +40,8 @@ namespace EducacaoOnline.Api.Configuration
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = jwtSettings?.Audiencia ?? string.Empty,
-                    ValidIssuer = jwtSettings?.Emissor ?? string.Empty,
+                    ValidAudience = jwtSettings.Audiencia,
+                    ValidIssuer = jwtSettings.Emissor,
                 };
             });
 

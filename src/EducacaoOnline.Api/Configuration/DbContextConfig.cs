@@ -2,6 +2,7 @@
 using EducacaoOnline.GestaoAlunos.Data.Context;
 using EducacaoOnline.GestaoConteudo.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EducacaoOnline.Api.Configuration
 {
@@ -15,29 +16,11 @@ namespace EducacaoOnline.Api.Configuration
 
             if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Production")
             {
-                services.AddDbContext<IdentityContext>(
-                    options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
-                        maxRetryCount: 2,
-                        maxRetryDelay: TimeSpan.FromSeconds(5),
-                        errorNumbersToAdd: null)));
-
-                services.AddDbContext<GestaoAlunosContext>(
-                    options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
-                        maxRetryCount: 2,
-                        maxRetryDelay: TimeSpan.FromSeconds(5),
-                        errorNumbersToAdd: null)));
-
-                services.AddDbContext<GestaoConteudoContext>(
-                    options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
-                        maxRetryCount: 2,
-                        maxRetryDelay: TimeSpan.FromSeconds(5),
-                        errorNumbersToAdd: null)));
+                AdicionarContextosUsandoSqlServer(services, connectionString);
             }
             else
             {
-                services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
-                services.AddDbContext<GestaoAlunosContext>(options => options.UseSqlite(connectionString));
-                services.AddDbContext<GestaoConteudoContext>(options => options.UseSqlite(connectionString));
+                AdicionarContextosUsandoSqlite(services, connectionString);
             }
 
             return services;
@@ -49,6 +32,33 @@ namespace EducacaoOnline.Api.Configuration
             app.UseAuthorization();
 
             return app;
+        }
+
+        [ExcludeFromCodeCoverage]
+        private static void AdicionarContextosUsandoSqlServer(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<IdentityContext>(
+                options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
+                    maxRetryCount: 2,
+                    maxRetryDelay: TimeSpan.FromSeconds(5),
+                    errorNumbersToAdd: null)));
+            services.AddDbContext<GestaoAlunosContext>(
+                options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
+                    maxRetryCount: 2,
+                    maxRetryDelay: TimeSpan.FromSeconds(5),
+                    errorNumbersToAdd: null)));
+            services.AddDbContext<GestaoConteudoContext>(
+                options => options.UseSqlServer(connectionString, a => a.EnableRetryOnFailure(
+                    maxRetryCount: 2,
+                    maxRetryDelay: TimeSpan.FromSeconds(5),
+                    errorNumbersToAdd: null)));
+        }
+
+        private static void AdicionarContextosUsandoSqlite(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
+            services.AddDbContext<GestaoAlunosContext>(options => options.UseSqlite(connectionString));
+            services.AddDbContext<GestaoConteudoContext>(options => options.UseSqlite(connectionString));
         }
     }
 }

@@ -2,6 +2,7 @@
 using EducacaoOnline.Api.Tests.Configuration;
 using EducacaoOnline.Api.Tests.Extensions;
 using EducacaoOnline.GestaoConteudo.Application.Models;
+using EducacaoOnline.GestaoConteudo.Domain.Validators;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Net.Http.Json;
@@ -122,6 +123,70 @@ namespace EducacaoOnline.Api.Tests.V1.GestaoConteudo
 
             // Assert
             Assert.Equal(HttpStatusCode.NoContent, putResponse.StatusCode);
+        }
+
+        [Fact(DisplayName = "Alterar curso, id diferente, retorna BadRequest")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
+        public async Task AlterarCurso_IdDiferente_DeveRetornarBadRequest()
+        {
+            // Arrange
+            await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
+
+            var id = Guid.NewGuid();
+            var cursoModel = new CursoModel
+            {
+                Id = id,
+                Nome = $"Curso Alterar Teste {id}",
+                Descricao = "Descrição Alterar Original"
+            };
+
+            var postResponse = await _testsFixture.Client.PostAsJsonAsync(URICursos, cursoModel);
+            Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+
+            var idDiferente = Guid.NewGuid();
+
+            // Act
+            cursoModel.Nome = $"Curso Alterado Nome {id}";
+            cursoModel.Descricao = "Descrição Alterada";
+            var putResponse = await _testsFixture.Client.PutAsJsonAsync($"{URICursos}/{idDiferente}", cursoModel);
+
+            // Assert
+            Assert.False(id == idDiferente);
+            Assert.Equal(HttpStatusCode.BadRequest, putResponse.StatusCode);
+            var responseString = await putResponse.Content.ReadAsStringAsync();
+            Assert.Contains(MensagensControllers.IdDiferente, responseString);
+        }
+
+        [Fact(DisplayName = "Alterar curso, dados inválidos, retorna BadRequest com erros")]
+        [Trait("Categoria", "Integração API - Gestão de Conteúdo - Cursos")]
+        public async Task AlterarCurso_ComDadosInvalidos_DeveRetornarBadRequestComErros()
+        {
+            // Arrange
+            await _testsFixture.FazerLoginAdministrador();
+            _testsFixture.Client.AtribuirToken(_testsFixture.UsuarioToken);
+
+            var id = Guid.NewGuid();
+            var cursoModel = new CursoModel
+            {
+                Id = id,
+                Nome = $"Curso Alterar Teste {id}",
+                Descricao = "Descrição Alterar Original"
+            };
+
+            var postResponse = await _testsFixture.Client.PostAsJsonAsync(URICursos, cursoModel);
+            Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+
+            // Act
+            cursoModel.Nome = "";
+            cursoModel.Descricao = "";
+            var putResponse = await _testsFixture.Client.PutAsJsonAsync($"{URICursos}/{id}", cursoModel);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, putResponse.StatusCode);
+            var responseString = await putResponse.Content.ReadAsStringAsync();
+            Assert.Contains(CursoValidator.TamanhoNomeErroMsg, responseString);
+            Assert.Contains(CursoValidator.TamanhoConteudoErroMsg, responseString);
         }
 
         [Fact(DisplayName = "Obter curso por id, id existente, retorna OK com curso")]

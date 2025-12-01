@@ -17,7 +17,7 @@ namespace EducacaoOnline.Core.Messages
 
         public virtual bool EhValido()
         {
-            return false;
+            return true;
         }
     }
 }

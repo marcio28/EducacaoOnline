@@ -10,11 +10,9 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Validators
         public const int TamanhoConteudoMinimo = 10;
         public const int TamanhoConteudoMaximo = 1000;
 
-        public static string TamanhoNomeErroMsg 
-            => string.Format("O nome deve conter {0} a {1} caracteres.", TamanhoNomeMinimo, TamanhoNomeMaximo);
+        public const string TamanhoNomeErroMsg = "O nome do curso deve conter 2 a 100 caracteres.";
 
-        public static string TamanhoConteudoErroMsg 
-            => string.Format("O conteúdo programático deve conter {0} a {1} caracteres.", TamanhoConteudoMinimo, TamanhoConteudoMaximo);
+        public const string TamanhoConteudoErroMsg = "O conteúdo programático deve conter 10 a 1000 caracteres.";
 
         public CursoValidator()
         {
