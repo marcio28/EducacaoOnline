@@ -32,5 +32,23 @@ namespace EducacaoOnline.GestaoAlunos.Domain
         {
             Status = StatusMatricula.Expirada;
         }
+
+        public void GerarCertificado(DateTime dataEmissao)
+        {
+            // Se já existir um certificado, não gera outro
+            if (Certificado is not null)
+                return;
+
+            if (Status is not StatusMatricula.Ativa)
+                throw new DomainException("Não é possível gerar o certificado, porque a matrícula não está ativa.");
+
+            if (HistoricoAprendizado is null || HistoricoAprendizado.Concluido is false)
+                throw new DomainException("Não é possível gerar o certificado, porque o curso ainda não foi concluído.");
+
+            if (dataEmissao > DateTime.Now)
+                throw new DomainException("A data de emissão do certificado não pode ser no futuro.");
+
+            Certificado = new Certificado(idMatricula: Id, IdAluno, IdCurso, dataEmissao);
+        }
     }
 }

@@ -7,6 +7,8 @@ namespace EducacaoOnline.GestaoAlunos.Domain
     {
         public Guid IdMatricula { get; private set; }
 
+        public bool Concluido { get; private set; } = false;
+
         public HistoricoAprendizado(Guid idMatricula)
         {
             IdMatricula = idMatricula;
