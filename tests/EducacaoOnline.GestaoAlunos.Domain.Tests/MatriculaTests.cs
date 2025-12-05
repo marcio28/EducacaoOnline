@@ -49,7 +49,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain.Tests
             var matricula = new Matricula(Guid.NewGuid(), Guid.NewGuid());
 
             // Act
-            matricula.AtivarMatricula();
+            matricula.Ativar();
 
             // Assert
             Assert.Equal(StatusMatricula.Ativa, matricula.Status);
@@ -63,7 +63,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain.Tests
             var matricula = new Matricula(Guid.NewGuid(), Guid.NewGuid());
 
             // Act
-            matricula.CancelarMatricula();
+            matricula.Cancelar();
 
             // Assert
             Assert.Equal(StatusMatricula.Cancelada, matricula.Status);
@@ -77,7 +77,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain.Tests
             var matricula = new Matricula(Guid.NewGuid(), Guid.NewGuid());
 
             // Act
-            matricula.ExpirarMatricula();
+            matricula.Expirar();
 
             // Assert
             Assert.Equal(StatusMatricula.Expirada, matricula.Status);
@@ -91,7 +91,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain.Tests
             var idAluno = Guid.NewGuid();
             var idCurso = Guid.NewGuid();
             var matricula = new Matricula(idAluno, idCurso);
-            matricula.AtivarMatricula();
+            matricula.Ativar();
 
             // cria e define histórico como concluído via reflection
             var historico = new HistoricoAprendizado(matricula.Id);
@@ -145,7 +145,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain.Tests
         {
             // Arrange
             var matricula = new Matricula(idAluno: Guid.NewGuid(), idCurso: Guid.NewGuid());
-            matricula.AtivarMatricula();
+            matricula.Ativar();
 
             // historico não atribuído (null) -> deve falhar
             var ex1 = Assert.Throws<DomainException>(() => matricula.GerarCertificado(DateTime.Now));
@@ -167,7 +167,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain.Tests
         {
             // Arrange
             var matricula = new Matricula(idAluno: Guid.NewGuid(), idCurso: Guid.NewGuid());
-            matricula.AtivarMatricula();
+            matricula.Ativar();
 
             var historico = new HistoricoAprendizado(matricula.Id);
             var tipoHistorico = typeof(HistoricoAprendizado);
@@ -193,7 +193,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain.Tests
             var idAluno = Guid.NewGuid();
             var idCurso = Guid.NewGuid();
             var matricula = new Matricula(idAluno, idCurso);
-            matricula.AtivarMatricula();
+            matricula.Ativar();
 
             var historico = new HistoricoAprendizado(matricula.Id);
             var tipoHistorico = typeof(HistoricoAprendizado);

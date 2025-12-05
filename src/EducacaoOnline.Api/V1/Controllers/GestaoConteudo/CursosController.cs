@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EducacaoOnline.Api.Controllers;
-using EducacaoOnline.Core.Messages.DomainNotifications;
+using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
 using EducacaoOnline.GestaoConteudo.Application.Models;
 using EducacaoOnline.GestaoConteudo.Domain;
 using EducacaoOnline.GestaoConteudo.Domain.Services;
@@ -24,7 +24,7 @@ namespace EducacaoOnline.Api.V1.Controllers.GestaoConteudo
                                 IHttpContextAccessor httpContextAccessor,
                                 IMapper mapper,
                                 IMediator mediatorHandler,
-                                INotificationHandler<NotificacaoDominio> _notificacaoHandler) : base(httpContextAccessor, mediatorHandler, _notificacaoHandler)
+                                INotificationHandler<DomainNotification> _notificacaoHandler) : base(httpContextAccessor, mediatorHandler, _notificacaoHandler)
         {
             _cursoService = cursoService;
             _mapper = mapper;

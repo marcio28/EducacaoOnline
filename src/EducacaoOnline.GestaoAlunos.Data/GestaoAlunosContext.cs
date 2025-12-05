@@ -3,7 +3,7 @@ using EducacaoOnline.Core.Messages;
 using EducacaoOnline.GestaoAlunos.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace EducacaoOnline.GestaoAlunos.Data.Context
+namespace EducacaoOnline.GestaoAlunos.Data
 {
     public class GestaoAlunosContext : DbContext, IUnitOfWork
     {

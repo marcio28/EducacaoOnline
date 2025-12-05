@@ -1,4 +1,4 @@
-﻿using EducacaoOnline.Core.Messages.DomainNotifications;
+﻿using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
 
 namespace EducacaoOnline.Core.Tests.Messages.Notifications
 {
@@ -9,7 +9,7 @@ namespace EducacaoOnline.Core.Tests.Messages.Notifications
         public void DomainNotificationHandler_Propriedades_DevemEstarPreenchidas()
         {
             // Arrange & Act
-            var domainNotificationHandler = new NotificacaoDominioHandler();
+            var domainNotificationHandler = new DomainNotificationHandler();
 
             // Assert
             Assert.NotNull(domainNotificationHandler);
@@ -22,8 +22,8 @@ namespace EducacaoOnline.Core.Tests.Messages.Notifications
         public async Task DomainNotificationHandler_Handle_DeveAdicionarNotificacao()
         {
             // Arrange
-            var domainNotificationHandler = new NotificacaoDominioHandler();
-            var notification = new NotificacaoDominio("CHAVE_TESTE", "VALOR_TESTE");
+            var domainNotificationHandler = new DomainNotificationHandler();
+            var notification = new DomainNotification("CHAVE_TESTE", "VALOR_TESTE");
 
             // Act
             await domainNotificationHandler.Handle(notification, CancellationToken.None);
@@ -35,6 +35,5 @@ namespace EducacaoOnline.Core.Tests.Messages.Notifications
             Assert.Contains(notification, notificacoes);
             Assert.True(domainNotificationHandler.TemNotificacoes());
         }
-
     }
 }

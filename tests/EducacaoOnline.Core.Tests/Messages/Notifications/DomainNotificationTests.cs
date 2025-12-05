@@ -1,4 +1,4 @@
-﻿using EducacaoOnline.Core.Messages.DomainNotifications;
+﻿using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
 
 namespace EducacaoOnline.Core.Tests.Messages.Notifications
 {
@@ -13,7 +13,7 @@ namespace EducacaoOnline.Core.Tests.Messages.Notifications
             var valor = "ValorTeste";
 
             // Act
-            var domainNotification = new NotificacaoDominio(chave, valor);
+            var domainNotification = new DomainNotification(chave, valor);
 
             // Assert
             Assert.NotEqual(Guid.Empty, domainNotification.Id);

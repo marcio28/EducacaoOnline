@@ -6,6 +6,7 @@ namespace EducacaoOnline.GestaoAlunos.Domain
 {
     public class Aluno : Entity, IAggregateRoot
     {
+        public string Nome { get; private set; } = string.Empty;
         public Collection<Matricula> Matriculas { get; private set; } = [];
         public int QuantidadeMatriculas => Matriculas.Count;
 
@@ -17,12 +18,19 @@ namespace EducacaoOnline.GestaoAlunos.Domain
         {
             if (idCurso == Guid.Empty) throw new MatriculaCursoInvalidoException();
 
-            var matricula = new Matricula(idAluno: Id,
-                                          idCurso: idCurso);
+            var matricula = new Matricula(
+                idAluno: Id, idCurso: idCurso);
 
             Matriculas.Add(matricula);
 
             return matricula;
+        }
+
+        public void AtivarMatricula(Guid idMatricula)
+        {
+            var matricula = Matriculas.FirstOrDefault(m => m.Id == idMatricula);
+            if (matricula is null) throw new MatriculaNaoEncontradaException();
+            matricula.Ativar();
         }
     }
 }

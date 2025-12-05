@@ -7,16 +7,15 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
 {
     public class RealizarPagamentoCommand : Command
     {
-        public Matricula Matricula { get; }
-        public Guid IdMatricula => Matricula.Id;
-        public StatusMatricula StatusMatricula => Matricula.Status;
+        public Guid IdAluno;
+        public Guid IdMatricula;
         public DadosCartao DadosCartao { get; }
         public List<ValidationFailure> ErrosCartao => DadosCartao.ValidationResult?.Errors ?? [];
 
-        public RealizarPagamentoCommand(Matricula matricula,
-                                        DadosCartao dadosCartao)
+        public RealizarPagamentoCommand(Guid idAluno, Guid idMatricula, DadosCartao dadosCartao)
         {
-            Matricula = matricula;
+            IdAluno = idAluno;
+            IdMatricula = idMatricula;
             DadosCartao = dadosCartao;
         }
 

@@ -18,17 +18,17 @@ namespace EducacaoOnline.GestaoAlunos.Domain
             IdCurso = idCurso;
         }
 
-        public void AtivarMatricula()
+        public void Ativar()
         {
             Status = StatusMatricula.Ativa;
         }
 
-        public void CancelarMatricula()
+        public void Cancelar()
         {
             Status = StatusMatricula.Cancelada;
         }
 
-        public void ExpirarMatricula()
+        public void Expirar()
         {
             Status = StatusMatricula.Expirada;
         }

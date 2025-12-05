@@ -1,5 +1,5 @@
 ﻿using EducacaoOnline.Api.Data;
-using EducacaoOnline.GestaoAlunos.Data.Context;
+using EducacaoOnline.GestaoAlunos.Data;
 using EducacaoOnline.GestaoConteudo.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;

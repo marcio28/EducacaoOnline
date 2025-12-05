@@ -1,6 +1,6 @@
 ﻿using EducacaoOnline.Core.Messages;
-using EducacaoOnline.Core.Messages.DomainNotifications;
-using EducacaoOnline.PagamentoEFaturamento.Application.Events;
+using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
+using EducacaoOnline.Core.Messages.CommonMessages.IntegrationEvents;
 using EducacaoOnline.PagamentoEFaturamento.Domain;
 using MediatR;
 
@@ -11,8 +11,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
         private readonly IPagamentoRepository _pagamentoRepository;
         private readonly IMediator _mediator;
 
-        public PagamentoCommandHandler(IPagamentoRepository pagamentoRepository,
-                                       IMediator mediator)
+        public PagamentoCommandHandler(IPagamentoRepository pagamentoRepository, IMediator mediator)
         {
             _pagamentoRepository = pagamentoRepository;
             _mediator = mediator;
@@ -27,16 +26,13 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
             if (ProcessarPagamento(message))
             {
                 pagamento.AtualizarStatus(StatusPagamento.Confirmado);
-                var matricula = message.Matricula;
-                matricula.Ativar();
-                pagamento.AdicionarEvento(new PagamentoRealizadoEvent(idPagamento: pagamento.Id,
-                                                                      idMatricula: message.IdMatricula));
+                pagamento.AdicionarEvento(new PagamentoRealizadoEvent(idPagamento: pagamento.Id, idAluno: message.IdAluno, 
+                    idMatricula: message.IdMatricula));
             } else
             {
                 pagamento.AtualizarStatus(StatusPagamento.Recusado);
-                pagamento.AdicionarEvento(new PagamentoRecusadoEvent(idPagamento: pagamento.Id,
-                                                                     idMatricula: message.IdMatricula,
-                                                                     errosCartao: message.ErrosCartao));
+                pagamento.AdicionarEvento(new PagamentoRecusadoEvent(idPagamento: pagamento.Id, idAluno: message.IdAluno,
+                    idMatricula: message.IdMatricula, errosCartao: message.ErrosCartao));
             }
 
             _pagamentoRepository.Adicionar(pagamento);
@@ -51,7 +47,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
 
             foreach (var error in message.Erros)
             {
-                _mediator.Publish(new NotificacaoDominio(message.MessageType, error.ErrorMessage));
+                _mediator.Publish(new DomainNotification(message.MessageType, error.ErrorMessage));
             }
 
             return false;
@@ -65,6 +61,8 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Commands
                 message.ErrosCartao.Add(new FluentValidation.Results.ValidationFailure("DadosCartao.NomeTitular", "Pagamento recusado pelo emissor do cartão."));
                 return false;
             }
+
+
             return true;
         }
     }

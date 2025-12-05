@@ -1,4 +1,4 @@
-﻿using EducacaoOnline.Core.Messages.DomainNotifications;
+﻿using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -10,16 +10,16 @@ namespace EducacaoOnline.Api.Controllers
     [ApiController]
     public class MainController : Controller
     {
-        private readonly NotificacaoDominioHandler _notificacaoHandler;
+        private readonly DomainNotificationHandler _notificacaoHandler;
         private readonly IMediator _mediatorHandler;
 
         protected Guid UsuarioId = Guid.Empty;
 
         protected MainController(IHttpContextAccessor httpContextAccessor,
                                  IMediator mediatorHandler,
-                                 INotificationHandler<NotificacaoDominio> notificacaoHandler)
+                                 INotificationHandler<DomainNotification> notificacaoHandler)
         {
-            _notificacaoHandler = (NotificacaoDominioHandler)notificacaoHandler;
+            _notificacaoHandler = (DomainNotificationHandler)notificacaoHandler;
             _mediatorHandler = mediatorHandler;
 
             var usuario = httpContextAccessor.HttpContext?.User;
@@ -84,7 +84,7 @@ namespace EducacaoOnline.Api.Controllers
 
         protected void NotificarErro(string codigo, string mensagem)
         {
-            _mediatorHandler.Publish(new NotificacaoDominio(codigo, mensagem));
+            _mediatorHandler.Publish(new DomainNotification(codigo, mensagem));
         }
     }
 }

@@ -9,7 +9,6 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
     {
         private readonly AutoMocker _mocker;
         private readonly PagamentoCommandHandler _pagamentoCommandHandler;
-        private Matricula? _matricula;
         private DadosCartao? _dadosCartao;
         private RealizarPagamentoCommand? _realizarPagamentoCommand;
 
@@ -19,12 +18,13 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
             _pagamentoCommandHandler = _mocker.CreateInstance<PagamentoCommandHandler>();
         }
 
-        [Fact(DisplayName = "Realizar Pagamento Matrícula Aguardando Pagamento Deve Ativar Matrícula")]
+        [Fact(DisplayName = "Realizar pagamento, cartão válido, salva pagamento e lança evento pagamento realizado")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento Command Handler")]
-        public async Task RealizarPagamento_MatriculaAguardandoPagamento_DeveAtivarMatriculaELancarEventoPagamentoRealizado()
+        public async Task RealizarPagamento_CartaoValido_DeveSalvarPagamentoERetornarVerdadeiro()
         {
             // Arrange
-            _matricula = new(StatusMatricula.AguardandoPagamento);
+            Guid idAluno = Guid.NewGuid();
+            Guid idMatricula = Guid.NewGuid();
 
             _dadosCartao = new(
                 nomeTitular: "Nome Teste",
@@ -32,7 +32,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
                 codigoSeguranca: "123",
                 dataValidade: DateTime.Now.AddYears(1));
 
-            _realizarPagamentoCommand = new(_matricula, _dadosCartao);
+            _realizarPagamentoCommand = new(idAluno, idMatricula, _dadosCartao);
 
             _mocker.GetMock<IPagamentoRepository>()
                 .Setup(r => r.UnitOfWork.Commit())
@@ -43,18 +43,19 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
 
             // Assert
             Assert.True(resultado);
-            Assert.Equal(StatusMatricula.Ativa, _matricula.Status);
             _mocker.GetMock<IPagamentoRepository>().Verify(r => r.Adicionar(It.IsAny<Pagamento>()), Times.Once);
             _mocker.GetMock<IPagamentoRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
+            // TODO: Também poderia verificar se o evento "PagamentoRealizado" foi lançado
         }
 
 
-        [Fact(DisplayName = "Cartão Inválido Não Ativa Matrícula")]
+        [Fact(DisplayName = "Realizar pagamento, cartão inválido, retorna falso")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento Command Handler")]
-        public async Task RealizarPagamento_CartaoInvalido_DeveNaoAtivarMatricula()
+        public async Task RealizarPagamento_CartaoInvalido_DeveRetornarFalso()
         {
             // Arrange
-            _matricula = new(StatusMatricula.AguardandoPagamento);
+            Guid idAluno = Guid.NewGuid();
+            Guid idMatricula = Guid.NewGuid();
 
             _dadosCartao = new(
                 nomeTitular: "",
@@ -62,7 +63,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
                 codigoSeguranca: "",
                 dataValidade: DateTime.Now.AddDays(-1));
 
-            _realizarPagamentoCommand = new(_matricula, _dadosCartao);
+            _realizarPagamentoCommand = new(idAluno, idMatricula, _dadosCartao);
 
             _mocker.GetMock<IPagamentoRepository>()
                 .Setup(r => r.UnitOfWork.Commit())
@@ -73,15 +74,15 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
 
             // Assert
             Assert.False(resultado);
-            Assert.Equal(StatusMatricula.AguardandoPagamento, _matricula.Status);
         }
 
-        [Fact(DisplayName = "Pagamento Recusado Não Ativa Matrícula e Lança Exceção")]
+        [Fact(DisplayName = "Realizar pagamento, recusado, salva pagamento e retorna falso")]
         [Trait("Categoria", "Pagamento e Faturamento - Pagamento Command Handler")]
-        public async Task RealizarPagamento_PagamentoRecusado_DeveNaoAtivarMatriculaELancarEventoPagamentoRecusado()
+        public async Task RealizarPagamento_PagamentoRecusado_DeveSalvarPagamentoERetornarFalso()
         {
             // Arrange
-            _matricula = new(StatusMatricula.AguardandoPagamento);
+            Guid idAluno = Guid.NewGuid();
+            Guid idMatricula = Guid.NewGuid();
 
             _dadosCartao = new(
                 nomeTitular: "Teste Falha",
@@ -89,7 +90,7 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
                 codigoSeguranca: "123",
                 dataValidade: DateTime.Now.AddYears(1));
 
-            _realizarPagamentoCommand = new(_matricula, _dadosCartao);
+            _realizarPagamentoCommand = new(idAluno, idMatricula, _dadosCartao);
 
             _mocker.GetMock<IPagamentoRepository>()
                 .Setup(r => r.UnitOfWork.Commit())
@@ -100,9 +101,9 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Commands
 
             // Assert
             Assert.False(resultado);
-            Assert.Equal(StatusMatricula.AguardandoPagamento, _matricula.Status);
             _mocker.GetMock<IPagamentoRepository>().Verify(r => r.Adicionar(It.IsAny<Pagamento>()), Times.Once);
             _mocker.GetMock<IPagamentoRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
+            // TODO: Também poderia verificar se o status do pagamento é "Recusado"
         }
     }
 }

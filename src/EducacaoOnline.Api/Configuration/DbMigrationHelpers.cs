@@ -1,5 +1,5 @@
 ﻿using EducacaoOnline.Api.Data;
-using EducacaoOnline.GestaoAlunos.Data.Context;
+using EducacaoOnline.GestaoAlunos.Data;
 using EducacaoOnline.GestaoAlunos.Domain;
 using EducacaoOnline.GestaoConteudo.Data.Context;
 using EducacaoOnline.GestaoConteudo.Domain;

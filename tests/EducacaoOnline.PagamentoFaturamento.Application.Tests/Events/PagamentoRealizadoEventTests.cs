@@ -1,6 +1,6 @@
-﻿using EducacaoOnline.PagamentoEFaturamento.Application.Events;
+﻿using EducacaoOnline.Core.Messages.CommonMessages.IntegrationEvents;
 
-namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Events
+namespace EducacaoOnline.PagamentoFaturamento.Application.Tests.Events
 {
     public class PagamentoRealizadoEventTests
     {
@@ -10,13 +10,15 @@ namespace EducacaoOnline.PagamentoEFaturamento.Application.Tests.Events
         {
             // Arrange
             var idPagamento = Guid.NewGuid();
+            var idAluno = Guid.NewGuid();
             var idMatricula = Guid.NewGuid();
 
             // Act
-            var pagamentoRealizadoEvent = new PagamentoRealizadoEvent(idPagamento, idMatricula);
+            var pagamentoRealizadoEvent = new PagamentoRealizadoEvent(idPagamento, idAluno, idMatricula);
 
             // Assert
             Assert.Equal(idPagamento, pagamentoRealizadoEvent.IdPagamento);
+            Assert.Equal(idAluno, pagamentoRealizadoEvent.IdAluno);
             Assert.Equal(idMatricula, pagamentoRealizadoEvent.IdMatricula);
         }
     }

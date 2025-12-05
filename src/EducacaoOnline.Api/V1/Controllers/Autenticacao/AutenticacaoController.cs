@@ -1,6 +1,6 @@
 ﻿using EducacaoOnline.Api.Controllers;
 using EducacaoOnline.Api.Models;
-using EducacaoOnline.Core.Messages.DomainNotifications;
+using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
 using EducacaoOnline.GestaoAlunos.Domain;
 using EducacaoOnline.GestaoAlunos.Domain.Repositories;
 using MediatR;
@@ -30,7 +30,7 @@ namespace EducacaoOnline.Api.V1.Controllers.Autenticacao
             IHttpContextAccessor httpContextAccessor,
             IMediator mediatorHandler,
             IOptions<JwtSettings> jwtSettings,
-            INotificationHandler<NotificacaoDominio> _notificacaoHandler,
+            INotificationHandler<DomainNotification> _notificacaoHandler,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager) : base(httpContextAccessor, mediatorHandler, _notificacaoHandler)
         {

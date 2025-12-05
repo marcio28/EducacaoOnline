@@ -1,4 +1,4 @@
-﻿using EducacaoOnline.Core.Messages.DomainNotifications;
+﻿using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
 using EducacaoOnline.GestaoAlunos.Data.Repositories;
 using EducacaoOnline.GestaoAlunos.Domain.Repositories;
 using EducacaoOnline.GestaoConteudo.Data.Repositories;
@@ -13,7 +13,7 @@ namespace EducacaoOnline.Api.Configuration
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             // Notificações
-            services.AddScoped<INotificationHandler<NotificacaoDominio>, NotificacaoDominioHandler>();
+            services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             // Repositórios
             services.AddScoped<IAlunoRepository, AlunoRepository>();

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace EducacaoOnline.Core.Messages.DomainNotifications
+namespace EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications
 {
-    public class NotificacaoDominio : Message, INotification
+    public class DomainNotification : Message, INotification
     {
         public Guid Id { get; }
         public DateTime DataHora { get; }
@@ -10,7 +10,7 @@ namespace EducacaoOnline.Core.Messages.DomainNotifications
         public string Valor { get; }
         public int Versao { get; }
 
-        public NotificacaoDominio(string chave, string valor)
+        public DomainNotification(string chave, string valor)
         {
             Id = Guid.NewGuid();
             DataHora = DateTime.Now;

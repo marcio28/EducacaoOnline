@@ -1,5 +1,5 @@
 ﻿
-using EducacaoOnline.Core.Messages.DomainNotifications;
+using EducacaoOnline.Core.Messages.CommonMessages.DomainNotifications;
 using EducacaoOnline.GestaoConteudo.Domain.Repositories;
 using MediatR;
 
@@ -23,7 +23,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             {
                 foreach (var erro in curso.Erros)
                 {
-                    await _mediator.Publish(new NotificacaoDominio("Curso", erro.ErrorMessage), tokenDeCancelamento);
+                    await _mediator.Publish(new DomainNotification("Curso", erro.ErrorMessage), tokenDeCancelamento);
                 }
                 return;
             }
@@ -31,14 +31,15 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             var cursoExistente = await _cursoRepository.ObterPorId(curso.Id, tokenDeCancelamento);
             if (cursoExistente is not null)
             {
-                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso já cadastrado."), tokenDeCancelamento);
+                await _mediator.Publish(new DomainNotification("Curso", "Curso já cadastrado."), tokenDeCancelamento);
                 return;
             }
 
             bool existeCursoComMesmoNome = await _cursoRepository.Existe(curso.Nome!, tokenDeCancelamento);
             if (existeCursoComMesmoNome)
             {
-                await _mediator.Publish(new NotificacaoDominio("Curso", "Já existe um curso cadastrado com este nome."), tokenDeCancelamento);
+                await _mediator.Publish(new DomainNotification("Curso", "Já existe um curso cadastrado com este nome."), 
+                    tokenDeCancelamento);
                 return;
             }
 
@@ -52,7 +53,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             {
                 foreach (var erro in curso.Erros)
                 {
-                    await _mediator.Publish(new NotificacaoDominio("Curso", erro.ErrorMessage), tokenDeCancelamento);
+                    await _mediator.Publish(new DomainNotification("Curso", erro.ErrorMessage), tokenDeCancelamento);
                 }
                 return;
             }
@@ -60,7 +61,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             var cursoExistente = await _cursoRepository.ObterPorId(curso.Id, tokenDeCancelamento);
             if (cursoExistente is null)
             {
-                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso não encontrado."), tokenDeCancelamento);
+                await _mediator.Publish(new DomainNotification("Curso", "Curso não encontrado."), tokenDeCancelamento);
                 return;
             }
 
@@ -68,7 +69,8 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             // se já existe um curso com o mesmo nome e não é o próprio registro que está sendo alterado
             if (existeCursoComMesmoNome && !string.Equals(cursoExistente.Nome, curso.Nome, StringComparison.OrdinalIgnoreCase))
             {
-                await _mediator.Publish(new NotificacaoDominio("Curso", "Já existe um curso cadastrado com este nome."), tokenDeCancelamento);
+                await _mediator.Publish(new DomainNotification("Curso", "Já existe um curso cadastrado com este nome."), 
+                    tokenDeCancelamento);
                 return;
             }
 
@@ -83,7 +85,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             var curso = await _cursoRepository.ObterPorId(id, tokenDeCancelamento);
             if (curso is null)
             {
-                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso não encontrado."), tokenDeCancelamento);
+                await _mediator.Publish(new DomainNotification("Curso", "Curso não encontrado."), tokenDeCancelamento);
                 return;
             }
 
@@ -102,7 +104,7 @@ namespace EducacaoOnline.GestaoConteudo.Domain.Services
             var curso = await _cursoRepository.ObterPorId(id, tokenDeCancelamento);
             if (curso is null)
             {
-                await _mediator.Publish(new NotificacaoDominio("Curso", "Curso não encontrado."), tokenDeCancelamento);
+                await _mediator.Publish(new DomainNotification("Curso", "Curso não encontrado."), tokenDeCancelamento);
                 return default!;
             }
 
